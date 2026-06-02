@@ -17,3 +17,50 @@ button:hover{
   gap:15px;
   margin-top:30px;
 }
+
+/* ===== 开始答题按钮区域 ===== */
+
+#start-container{
+
+  display:flex;
+
+  justify-content:center;
+
+  align-items:center;
+
+  width:100%;
+
+  min-height:500px;
+}
+
+
+/* ===== 开始答题按钮 ===== */
+
+.start-btn{
+
+  padding:22px 48px;
+
+  font-size:32px;
+
+  font-weight:bold;
+
+  border:none;
+
+  border-radius:18px;
+
+  background:#2563eb;
+
+  color:white;
+
+  cursor:pointer;
+
+  transition:0.25s;
+}
+
+
+.start-btn:hover{
+
+  transform:scale(1.05);
+
+  opacity:0.92;
+}
