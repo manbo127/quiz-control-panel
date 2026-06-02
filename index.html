@@ -21,31 +21,24 @@
     <h1>知识竞赛赛事控制台</h1>
 
     <nav>
-
-      <!-- 首页 -->
       <button onclick="switchMode('home')">
         首页
       </button>
 
-      <!-- 必答题 -->
       <button onclick="switchMode('answer'); startQuestion();">
         必答题
       </button>
 
-      <!-- 抢答题 -->
       <button onclick="switchMode('buzzer'); startQuestion();">
         抢答题
       </button>
 
-      <!-- 风险题 -->
       <button onclick="switchMode('risk'); startQuestion();">
         风险题
       </button>
-
     </nav>
 
   </header>
-
 
   <!-- 主布局 -->
   <main class="main-layout">
@@ -62,7 +55,6 @@
 
       </div>
 
-
       <!-- 答题页面 -->
       <div id="question-page" class="page">
 
@@ -71,11 +63,10 @@
           必答题
         </div>
 
-
         <!-- 题卡 -->
         <div class="question-card">
 
-          <!-- 开始答题按钮区域 -->
+          <!-- 开始答题 -->
           <div id="start-container">
 
             <button id="start-btn" class="start-btn">
@@ -83,7 +74,6 @@
             </button>
 
           </div>
-
 
           <!-- 真正答题区域 -->
           <div id="question-container" style="display:none;">
@@ -100,7 +90,7 @@
             <!-- 抢答队伍 -->
             <div class="team-selector" id="team-selector"></div>
 
-            <!-- 风险分值 -->
+            <!-- 风险题分值 -->
             <div class="risk-selector" id="risk-selector"></div>
 
             <!-- 结果 -->
@@ -109,10 +99,25 @@
             <!-- 按钮组 -->
             <div class="button-group">
 
+              <!-- 普通题按钮 -->
               <button id="submit-btn">
                 提交答案
               </button>
 
+              <!-- 风险题按钮 -->
+              <button id="end-answer-btn" style="display:none;">
+                结束作答
+              </button>
+
+              <button id="correct-btn" style="display:none;">
+                回答正确
+              </button>
+
+              <button id="wrong-btn" style="display:none;">
+                回答错误
+              </button>
+
+              <!-- 全模式统一下一题 -->
               <button id="next-btn">
                 下一题
               </button>
@@ -126,7 +131,6 @@
       </div>
 
     </section>
-
 
     <!-- 积分榜 -->
     <aside class="scoreboard">
@@ -145,7 +149,6 @@
     </aside>
 
   </main>
-
 
   <!-- JS -->
   <script type="module" src="js/main.js"></script>

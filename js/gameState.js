@@ -38,23 +38,20 @@ export const gameState = {
     type:'single'
   })),
 
-  // ===== 风险题 10道 =====
+  // ===== 风险题（简述题） =====
   riskQuestions: {
     20: [
-      { id:201, question:'风险题1：哪些属于前端技术？', options:['HTML','CSS','MySQL','JavaScript'], answer:['HTML','CSS','JavaScript'], used:false, type:'multiple', score:20 },
-      { id:202, question:'风险题2：哪些是颜色属性？', options:['color','background','font-size','border'], answer:['color','background'], used:false, type:'multiple', score:20 },
-      { id:203, question:'风险题3：下列哪些是编程语言？', options:['Python','HTML','Java','CSS'], answer:['Python','Java'], used:false, type:'multiple', score:20 }
+      { id:201, question:'风险题1：请简述水循环的基本过程', answer:['蒸发、凝结、降水、径流'], used:false, score:20 },
+      { id:202, question:'风险题2：请说出地球的三大圈层', answer:['地壳、大气层、水圈'], used:false, score:20 },
+      { id:203, question:'风险题3：描述光合作用的基本过程', answer:['光合作用产生葡萄糖和氧气'], used:false, score:20 }
     ],
-    50: [
-      { id:204, question:'风险题4：哪些属于数据库？', options:['MySQL','MongoDB','HTML','CSS'], answer:['MySQL','MongoDB'], used:false, type:'multiple', score:50 },
-      { id:205, question:'风险题5：哪些是框架？', options:['Vue','React','Java','Python'], answer:['Vue','React'], used:false, type:'multiple', score:50 },
-      { id:206, question:'风险题6：哪些是CSS布局属性？', options:['flex','grid','position','Python'], answer:['flex','grid','position'], used:false, type:'multiple', score:50 }
+    30: [
+      { id:204, question:'风险题4：简述光合作用的化学方程式', answer:['6CO2 + 6H2O → C6H12O6 + 6O2'], used:false, score:30 },
+      { id:205, question:'风险题5：描述DNA的基本结构', answer:['双螺旋结构，由核苷酸组成'], used:false, score:30 }
     ],
-    100: [
-      { id:207, question:'风险题7：哪些是前端打包工具？', options:['Webpack','Vite','React','Python'], answer:['Webpack','Vite'], used:false, type:'multiple', score:100 },
-      { id:208, question:'风险题8：哪些是前端路由库？', options:['Vue-router','React-router','Node.js','CSS'], answer:['Vue-router','React-router'], used:false, type:'multiple', score:100 },
-      { id:209, question:'风险题9：哪些是前端状态管理库？', options:['Vuex','Pinia','Python','MySQL'], answer:['Vuex','Pinia'], used:false, type:'multiple', score:100 },
-      { id:210, question:'风险题10：哪些是浏览器渲染相关API？', options:['DOM','Canvas','MySQL','Node.js'], answer:['DOM','Canvas'], used:false, type:'multiple', score:100 }
+    40: [
+      { id:206, question:'风险题6：解释相对论的核心原理', answer:['时间和空间相对性，质能方程 E=mc²'], used:false, score:40 },
+      { id:207, question:'风险题7：简述量子力学的不确定性原理', answer:['位置和动量不能同时精确测量'], used:false, score:40 }
     ]
   }
 
