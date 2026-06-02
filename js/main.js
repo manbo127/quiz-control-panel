@@ -158,12 +158,19 @@ submitBtn.onclick = () => {
   const isCorrect = selected === answer;
 
   let points = gameState.mode === 'risk' ? gameState.selectedRisk : 10;
+
   if (isCorrect) {
     resultArea.innerText = `回答正确！ +${points}分`;
     updateScore(targetTeamId, points);
   } else {
-    resultArea.innerText = `回答错误！正确答案：${q.answer.join(',')} 扣${points}分`;
-    updateScore(targetTeamId, -points);
+    if (gameState.mode === 'answer') {
+      // 必答题答错不扣分
+      resultArea.innerText = `回答错误！正确答案：${q.answer.join(',')}`;
+    } else {
+      // 抢答题和风险题仍然扣分
+      resultArea.innerText = `回答错误！正确答案：${q.answer.join(',')} 扣${points}分`;
+      updateScore(targetTeamId, -points);
+    }
   }
 
   if (gameState.mode === 'answer') {
