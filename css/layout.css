@@ -1,49 +1,114 @@
-body{
-  height:100vh;
+/* ===== 页面主体 ===== */
+body {
+  height: 100vh;
 }
 
-.topbar{
-  height:80px;
-  background:#111827;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:0 30px;
-  border-bottom:1px solid #374151;
+/* ===== 顶部导航条 ===== */
+.topbar {
+  height: 80px;
+  background: #ffffff;               /* 浅色背景 */
+  color: #1e293b;                    /* 深灰文字 */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30px;
+  border-bottom: 1px solid #e2e8f0; /* 浅灰分割线 */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
-.topbar nav{
-  display:flex;
-  gap:10px;
+.topbar nav {
+  display: flex;
+  gap: 10px;
 }
 
-.main-layout{
-  display:flex;
-  height:calc(100vh - 80px);
+.topbar nav button {
+  background: #4f8cff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
-.content-area{
-  flex:1;
-  padding:30px;
+.topbar nav button:hover {
+  background: #3f7fff;
 }
+
+/* ===== 主布局 ===== */
+.main-layout {
+  display: flex;
+  height: calc(100vh - 80px);
+  gap: 24px;
+  padding: 24px;
+  background: #f3f6fb; /* 浅灰背景 */
+  box-sizing: border-box;
+}
+
+/* ===== 左侧内容区域 ===== */
+.content-area {
+  flex: 1;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ===== 答题卡片 ===== */
+.question-card {
+  background: #ffffff;                 /* 白色卡片 */
+  padding: 30px;
+  border-radius: 16px;
+  min-height: 600px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== 模式标题 ===== */
+.mode-title {
+  font-size: 32px;
+  margin-bottom: 20px;
+  color: #1e293b;
+  font-weight: 600;
+}
+
+/* ===== 题目文本 ===== */
+.question-text {
+  font-size: 28px;
+  margin: 30px 0;
+  color: #111827;
+}
+
+/* ===== 当前队伍信息 ===== */
+.team-info {
+  font-size: 22px;
+  color: #1e293b;
+}
+
+/* ===== 题卡动画 ===== */
 
 .question-card{
-  background:#1e293b;
-  padding:30px;
-  border-radius:16px;
-  min-height:600px;
+
+  animation:cardFade 0.45s ease;
 }
 
-.mode-title{
-  font-size:32px;
-  margin-bottom:20px;
-}
 
-.question-text{
-  font-size:28px;
-  margin:30px 0;
-}
+/* ===== 动画定义 ===== */
 
-.team-info{
-  font-size:22px;
+@keyframes cardFade{
+
+  from{
+
+    opacity:0;
+
+    transform:translateY(20px);
+  }
+
+  to{
+
+    opacity:1;
+
+    transform:translateY(0);
+  }
 }
