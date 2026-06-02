@@ -8,74 +8,216 @@ const questionText = document.getElementById('question-text');
 const optionsContainer = document.getElementById('options-container');
 const resultArea = document.getElementById('result-area');
 const teamInfo = document.getElementById('team-info');
-const teamSelector = document.getElementById('team-selector');
 
-const submitBtn = document.getElementById('submit-btn');
-const nextBtn = document.getElementById('next-btn');
+const teamSelector =
+  document.getElementById('team-selector');
+
+const riskSelector =
+  document.getElementById('risk-selector');
+
+const submitBtn =
+  document.getElementById('submit-btn');
+
+const nextBtn =
+  document.getElementById('next-btn');
 
 
-// 渲染抢答队伍按钮
+// =============================
+// 抢答题队伍选择
+// =============================
 function renderTeamSelector(){
 
   teamSelector.innerHTML = '';
 
-  // 只有抢答题显示
-  if(gameState.mode !== 'buzzer'){
+  // 抢答题
+  if(gameState.mode === 'buzzer'){
+
+    gameState.teams.forEach(team=>{
+
+      const btn =
+        document.createElement('button');
+
+      btn.className = 'team-button';
+
+      btn.innerText = team.name;
+
+      if(gameState.selectedTeam === team.id){
+        btn.classList.add('active');
+      }
+
+      btn.onclick = ()=>{
+
+        gameState.selectedTeam = team.id;
+
+        renderTeamSelector();
+
+        teamInfo.innerText =
+          `当前抢答队伍：${team.name}`;
+
+      };
+
+      teamSelector.appendChild(btn);
+
+    });
+
+  }
+
+  // 风险题
+  if(gameState.mode === 'risk'){
+
+    gameState.teams.forEach(team=>{
+
+      const btn =
+        document.createElement('button');
+
+      btn.className = 'team-button';
+
+      btn.innerText = team.name;
+
+      if(gameState.selectedTeam === team.id){
+        btn.classList.add('active');
+      }
+
+      btn.onclick = ()=>{
+
+        gameState.selectedTeam = team.id;
+
+        renderTeamSelector();
+
+        teamInfo.innerText =
+          `当前风险队伍：${team.name}`;
+
+      };
+
+      teamSelector.appendChild(btn);
+
+    });
+
+  }
+
+}
+
+
+// =============================
+// 风险题分值选择
+// =============================
+function renderRiskSelector(){
+
+  riskSelector.innerHTML = '';
+
+  if(gameState.mode !== 'risk'){
     return;
   }
 
-  gameState.teams.forEach(team=>{
+  const riskLevels =
+    Object.keys(gameState.riskQuestions);
 
-    const btn = document.createElement('button');
+  riskLevels.forEach(val=>{
+
+    const btn =
+      document.createElement('button');
 
     btn.className = 'team-button';
 
-    btn.innerText = team.name;
+    btn.innerText = `${val}分`;
 
-    // 高亮当前队伍
-    if(gameState.selectedTeam === team.id){
+    if(gameState.selectedRisk === parseInt(val)){
       btn.classList.add('active');
     }
 
     btn.onclick = ()=>{
 
-      gameState.selectedTeam = team.id;
+      // 必须先选队伍
+      if(!gameState.selectedTeam){
 
-      renderTeamSelector();
+        alert('请先选择队伍');
 
-      teamInfo.innerText =
-        `当前抢答队伍：${team.name}`;
+        return;
+      }
+
+      gameState.selectedRisk =
+        parseInt(val);
+
+      renderRiskSelector();
+
+      // 自动显示题目
+      renderQuestion();
 
     };
 
-    teamSelector.appendChild(btn);
+    riskSelector.appendChild(btn);
 
   });
 
 }
 
 
+// =============================
+// 更新当前队伍显示
+// =============================
+function updateCurrentTeamInfo(){
+
+  // 必答题
+  if(gameState.mode === 'answer'){
+
+    const team =
+      gameState.teams[
+        gameState.currentAnswerTeam - 1
+      ];
+
+    teamInfo.innerText =
+      `当前队伍：${team.name}
+      （第 ${team.answerCount + 1}
+      / ${gameState.maxAnswerQuestions} 题）`;
+
+  }
+
+}
+
+
+// =============================
 // 渲染题目
+// =============================
 function renderQuestion(){
 
-  const question = getRandomQuestion(gameState.mode);
-
-  gameState.currentQuestion = question;
-
-  if(!question){
-    questionText.innerText = '没有更多题目';
+  // 风险题必须先选择分值
+  if(
+    gameState.mode === 'risk'
+    &&
+    !gameState.selectedRisk
+  ){
     return;
   }
 
-  questionText.innerText = question.question;
+  const question =
+    getRandomQuestion(gameState.mode);
+
+  gameState.currentQuestion = question;
+
+  // 没题了
+  if(!question){
+
+    questionText.innerText =
+      '没有更多题目';
+
+    optionsContainer.innerHTML = '';
+
+    return;
+  }
+
+  questionText.innerText =
+    question.question;
 
   optionsContainer.innerHTML = '';
+
+  resultArea.innerText = '';
 
   gameState.selectedAnswers = [];
 
   question.options.forEach(option=>{
 
-    const div = document.createElement('div');
+    const div =
+      document.createElement('div');
 
     div.className = 'option';
 
@@ -88,7 +230,9 @@ function renderQuestion(){
 
         document
           .querySelectorAll('.option')
-          .forEach(o=>o.classList.remove('selected'));
+          .forEach(o=>
+            o.classList.remove('selected')
+          );
 
         div.classList.add('selected');
 
@@ -101,16 +245,21 @@ function renderQuestion(){
 
         div.classList.toggle('selected');
 
-        if(gameState.selectedAnswers.includes(option)){
+        if(
+          gameState.selectedAnswers
+            .includes(option)
+        ){
 
           gameState.selectedAnswers =
-            gameState.selectedAnswers.filter(
-              a=>a!==option
-            );
+            gameState.selectedAnswers
+              .filter(a=>a!==option);
 
-        }else{
+        }
 
-          gameState.selectedAnswers.push(option);
+        else{
+
+          gameState.selectedAnswers
+            .push(option);
 
         }
 
@@ -122,31 +271,94 @@ function renderQuestion(){
 
   });
 
-  // 渲染抢答队伍
   renderTeamSelector();
+
+  // 避免风险题无限循环
+  if(gameState.mode !== 'risk'){
+    renderRiskSelector();
+  }
+
+  updateCurrentTeamInfo();
 
 }
 
 
+// =============================
 // 提交答案
+// =============================
 submitBtn.onclick = ()=>{
 
-  // 抢答题必须先选队伍
-  if(
-    gameState.mode === 'buzzer'
-    &&
-    !gameState.selectedTeam
-  ){
-    alert('请先选择抢到题的队伍');
-    return;
-  }
-
-  const q = gameState.currentQuestion;
+  const q =
+    gameState.currentQuestion;
 
   if(!q){
     return;
   }
 
+  // 没选答案
+  if(
+    gameState.selectedAnswers.length === 0
+  ){
+    alert('请选择答案');
+    return;
+  }
+
+  let targetTeamId = 1;
+
+  // =========================
+  // 必答题
+  // =========================
+  if(gameState.mode === 'answer'){
+
+    targetTeamId =
+      gameState.currentAnswerTeam;
+
+  }
+
+  // =========================
+  // 抢答题
+  // =========================
+  if(gameState.mode === 'buzzer'){
+
+    if(!gameState.selectedTeam){
+
+      alert('请先选择抢答队伍');
+
+      return;
+    }
+
+    targetTeamId =
+      gameState.selectedTeam;
+
+  }
+
+  // =========================
+  // 风险题
+  // =========================
+  if(gameState.mode === 'risk'){
+
+    if(!gameState.selectedTeam){
+
+      alert('请先选择队伍');
+
+      return;
+    }
+
+    if(!gameState.selectedRisk){
+
+      alert('请先选择分值');
+
+      return;
+    }
+
+    targetTeamId =
+      gameState.selectedTeam;
+
+  }
+
+  // =========================
+  // 判题
+  // =========================
   const selected =
     [...gameState.selectedAnswers]
       .sort()
@@ -157,22 +369,27 @@ submitBtn.onclick = ()=>{
       .sort()
       .join(',');
 
-  const isCorrect = selected === answer;
+  const isCorrect =
+    selected === answer;
 
-  // 默认队伍1
-  let targetTeamId = 1;
+  // 分值
+  let points = 10;
 
-  // 抢答题使用选择队伍
-  if(gameState.mode === 'buzzer'){
-    targetTeamId = gameState.selectedTeam;
+  // 风险题使用对应分值
+  if(gameState.mode === 'risk'){
+    points = gameState.selectedRisk;
   }
 
   // 正确
   if(isCorrect){
 
-    resultArea.innerText = '回答正确！';
+    resultArea.innerText =
+      `回答正确！ +${points}分`;
 
-    updateScore(targetTeamId, 10);
+    updateScore(
+      targetTeamId,
+      points
+    );
 
   }
 
@@ -180,9 +397,25 @@ submitBtn.onclick = ()=>{
   else{
 
     resultArea.innerText =
-      `回答错误！正确答案：${q.answer.join(',')}`;
+      `回答错误！
+      正确答案：${q.answer.join(',')}
+      扣 ${points} 分`;
 
-    updateScore(targetTeamId, -10);
+    updateScore(
+      targetTeamId,
+      -points
+    );
+
+  }
+
+  // =========================
+  // 必答题计数
+  // =========================
+  if(gameState.mode === 'answer'){
+
+    gameState.teams[
+      targetTeamId - 1
+    ].answerCount++;
 
   }
 
@@ -191,24 +424,125 @@ submitBtn.onclick = ()=>{
 };
 
 
+// =============================
 // 下一题
+// =============================
 nextBtn.onclick = ()=>{
 
   resultArea.innerText = '';
 
-  // 清空抢答队伍
+  // =========================
+  // 必答题轮换
+  // =========================
+  if(gameState.mode === 'answer'){
+
+    const team =
+      gameState.teams[
+        gameState.currentAnswerTeam - 1
+      ];
+
+    // 当前队伍答满5题
+    if(
+      team.answerCount >=
+      gameState.maxAnswerQuestions
+    ){
+
+      // 切换下一队
+      if(
+        gameState.currentAnswerTeam <
+        gameState.teams.length
+      ){
+
+        gameState.currentAnswerTeam++;
+
+      }
+
+      // 所有队伍结束
+      else{
+
+        alert('必答题阶段结束！');
+
+        switchMode('home');
+
+        return;
+
+      }
+
+    }
+
+  }
+
+  // =========================
+  // 清空状态
+  // =========================
+  gameState.selectedAnswers = [];
+
   gameState.selectedTeam = null;
 
+  gameState.selectedRisk = null;
+
   teamInfo.innerText = '';
+
+  // 风险题重新选择
+  if(gameState.mode === 'risk'){
+
+    questionText.innerText =
+      '请选择队伍和分值';
+
+    optionsContainer.innerHTML = '';
+
+    renderTeamSelector();
+
+    renderRiskSelector();
+
+    return;
+
+  }
 
   renderQuestion();
 
 };
 
 
-// 初始化
+// =============================
+// 页面初始化
+// =============================
 switchMode('home');
 
 renderScoreboard();
 
-window.startQuestion = renderQuestion;
+
+// =============================
+// 全局启动函数
+// =============================
+window.startQuestion = ()=>{
+
+  // 必答题
+  if(gameState.mode === 'answer'){
+
+    renderQuestion();
+
+  }
+
+  // 抢答题
+  if(gameState.mode === 'buzzer'){
+
+    renderQuestion();
+
+  }
+
+  // 风险题
+  if(gameState.mode === 'risk'){
+
+    questionText.innerText =
+      '请选择队伍和分值';
+
+    optionsContainer.innerHTML = '';
+
+    renderTeamSelector();
+
+    renderRiskSelector();
+
+  }
+
+};
