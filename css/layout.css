@@ -112,3 +112,56 @@ body {
     transform:translateY(0);
   }
 }
+
+/* ===== 首页居中区域 ===== */
+
+.home-center{
+
+  height:70vh;
+
+  display:flex;
+
+  flex-direction:column;
+
+  justify-content:center;
+
+  align-items:center;
+
+  text-align:center;
+}
+
+
+/* ===== 主标题 ===== */
+
+.home-title{
+
+  font-size:42px;
+
+  font-weight:700;
+
+  color:#1e293b;
+
+  line-height:1.6;
+
+  margin-bottom:24px;
+
+  letter-spacing:1px;
+}
+
+
+/* ===== 副标题 ===== */
+
+.home-subtitle{
+
+  font-size:64px;
+
+  font-weight:800;
+
+  background:linear-gradient(135deg,#4f8cff,#2563eb);
+
+  -webkit-background-clip:text;
+
+  -webkit-text-fill-color:transparent;
+
+  letter-spacing:6px;
+}
