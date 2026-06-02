@@ -15,40 +15,77 @@
 
 <body>
 
+  <!-- 顶部导航 -->
   <header class="topbar">
+
     <h1>知识竞赛赛事控制台</h1>
 
     <nav>
-      <button onclick="switchMode('home')">首页</button>
-      <button onclick="switchMode('answer')">必答题</button>
-      <button onclick="switchMode('buzzer')">抢答题</button>
-      <button onclick="switchMode('risk')">风险题</button>
+
+      <!-- 首页 -->
+      <button onclick="switchMode('home')">
+        首页
+      </button>
+
+      <!-- 必答题 -->
+      <button onclick="switchMode('answer'); startQuestion();">
+        必答题
+      </button>
+
+      <!-- 抢答题 -->
+      <button onclick="switchMode('buzzer'); startQuestion();">
+        抢答题
+      </button>
+
+      <!-- 风险题 -->
+      <button onclick="switchMode('risk'); startQuestion();">
+        风险题
+      </button>
+
     </nav>
+
   </header>
 
+
+  <!-- 主布局 -->
   <main class="main-layout">
 
+    <!-- 内容区域 -->
     <section class="content-area">
 
-      <!-- 首页内容 -->
+      <!-- 首页 -->
       <div id="home-page" class="page active">
+
         <h2>欢迎进入知识竞赛系统</h2>
+
         <p>请选择比赛模式。</p>
+
       </div>
+
 
       <!-- 答题页面 -->
       <div id="question-page" class="page">
 
-        <div class="mode-title" id="mode-title">必答题</div>
+        <!-- 模式标题 -->
+        <div class="mode-title" id="mode-title">
+          必答题
+        </div>
 
+
+        <!-- 题卡 -->
         <div class="question-card">
 
-          <!-- 开始答题按钮 -->
+          <!-- 开始答题按钮区域 -->
           <div id="start-container">
-            <button id="start-btn" class="start-btn">开始答题</button>
+
+            <button id="start-btn" class="start-btn">
+              开始答题
+            </button>
+
           </div>
 
-          <!-- 答题区域，初始隐藏 -->
+
+          <!-- 真正答题区域 -->
           <div id="question-container" style="display:none;">
 
             <!-- 当前队伍 -->
@@ -60,19 +97,26 @@
             <!-- 选项 -->
             <div class="options-container" id="options-container"></div>
 
-            <!-- 抢答队伍选择 -->
+            <!-- 抢答队伍 -->
             <div class="team-selector" id="team-selector"></div>
 
-            <!-- 风险分值选择 -->
+            <!-- 风险分值 -->
             <div class="risk-selector" id="risk-selector"></div>
 
-            <!-- 结果显示 -->
+            <!-- 结果 -->
             <div class="result-area" id="result-area"></div>
 
-            <!-- 提交和下一题按钮 -->
+            <!-- 按钮组 -->
             <div class="button-group">
-              <button id="submit-btn">提交答案</button>
-              <button id="next-btn">下一题</button>
+
+              <button id="submit-btn">
+                提交答案
+              </button>
+
+              <button id="next-btn">
+                下一题
+              </button>
+
             </div>
 
           </div>
@@ -83,14 +127,27 @@
 
     </section>
 
+
+    <!-- 积分榜 -->
     <aside class="scoreboard">
+
       <h3>实时积分榜</h3>
+
       <div id="scoreboard-list"></div>
-      <button onclick="switchMode('home')" class="home-btn">返回主界面</button>
+
+      <button
+        onclick="switchMode('home')"
+        class="home-btn"
+      >
+        返回主界面
+      </button>
+
     </aside>
 
   </main>
 
+
+  <!-- JS -->
   <script type="module" src="js/main.js"></script>
 
 </body>
