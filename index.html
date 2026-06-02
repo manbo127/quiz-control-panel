@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,79 +15,84 @@
 
 <body>
 
-<header class="topbar">
-  <h1>知识竞赛赛事控制台</h1>
+  <header class="topbar">
+    <h1>知识竞赛赛事控制台</h1>
 
-  <nav>
-    <button onclick="switchMode('home')">首页</button>
-    <button onclick="switchMode('answer')">必答题</button>
-    <button onclick="switchMode('buzzer')">抢答题</button>
-    <button onclick="switchMode('risk')">风险题</button>
-  </nav>
-</header>
+    <nav>
+      <button onclick="switchMode('home')">首页</button>
+      <button onclick="switchMode('answer')">必答题</button>
+      <button onclick="switchMode('buzzer')">抢答题</button>
+      <button onclick="switchMode('risk')">风险题</button>
+    </nav>
+  </header>
 
-<main class="main-layout">
+  <main class="main-layout">
 
-  <section class="content-area">
+    <section class="content-area">
 
-    <div id="home-page" class="page active">
-      <h2>欢迎进入知识竞赛系统</h2>
-      <p>请选择比赛模式。</p>
-    </div>
-
-    <div id="question-page" class="page">
-
-      <div class="mode-title" id="mode-title">
-        必答题
+      <!-- 首页内容 -->
+      <div id="home-page" class="page active">
+        <h2>欢迎进入知识竞赛系统</h2>
+        <p>请选择比赛模式。</p>
       </div>
 
-      <div class="question-card">
+      <!-- 答题页面 -->
+      <div id="question-page" class="page">
 
-        <div class="team-info" id="team-info">
-          当前队伍：队伍1
-        </div>
+        <div class="mode-title" id="mode-title">必答题</div>
 
-        <div class="question-text" id="question-text">
-          这里显示题目
-        </div>
+        <div class="question-card">
 
-        <div class="options-container" id="options-container">
-        </div>
+          <!-- 开始答题按钮 -->
+          <div id="start-container">
+            <button id="start-btn" class="start-btn">开始答题</button>
+          </div>
 
-        <div class="team-selector" id="team-selector">
-        </div>
+          <!-- 答题区域，初始隐藏 -->
+          <div id="question-container" style="display:none;">
 
-        <div class="risk-selector" id="risk-selector">
-        </div>
+            <!-- 当前队伍 -->
+            <div class="team-info" id="team-info"></div>
 
-        <div class="result-area" id="result-area">
-        </div>
+            <!-- 题目 -->
+            <div class="question-text" id="question-text"></div>
 
-        <div class="button-group">
-          <button id="submit-btn">提交答案</button>
-          <button id="next-btn">下一题</button>
+            <!-- 选项 -->
+            <div class="options-container" id="options-container"></div>
+
+            <!-- 抢答队伍选择 -->
+            <div class="team-selector" id="team-selector"></div>
+
+            <!-- 风险分值选择 -->
+            <div class="risk-selector" id="risk-selector"></div>
+
+            <!-- 结果显示 -->
+            <div class="result-area" id="result-area"></div>
+
+            <!-- 提交和下一题按钮 -->
+            <div class="button-group">
+              <button id="submit-btn">提交答案</button>
+              <button id="next-btn">下一题</button>
+            </div>
+
+          </div>
+
         </div>
 
       </div>
-    </div>
 
-  </section>
+    </section>
 
-  <aside class="scoreboard">
+    <aside class="scoreboard">
+      <h3>实时积分榜</h3>
+      <div id="scoreboard-list"></div>
+      <button onclick="switchMode('home')" class="home-btn">返回主界面</button>
+    </aside>
 
-    <h3>实时积分榜</h3>
+  </main>
 
-    <div id="scoreboard-list"></div>
-
-    <button onclick="switchMode('home')" class="home-btn">
-      返回主界面
-    </button>
-
-  </aside>
-
-</main>
-
-<script type="module" src="js/main.js"></script>
+  <script type="module" src="js/main.js"></script>
 
 </body>
+
 </html>
