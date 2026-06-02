@@ -291,15 +291,60 @@ nextBtn.onclick = () => {
   }
 
   if (gameState.mode === 'answer') {
-    const team = gameState.teams[gameState.currentAnswerTeam - 1];
-    if (team.answerCount >= gameState.maxAnswerQuestions) {
-      if (gameState.currentAnswerTeam < gameState.teams.length) {
+
+    const team =
+      gameState.teams[
+      gameState.currentAnswerTeam - 1
+      ];
+
+    // 当前队伍答完
+    if (
+      team.answerCount >=
+      gameState.maxAnswerQuestions
+    ) {
+
+      // 还有下一队
+      if (
+        gameState.currentAnswerTeam <
+        gameState.teams.length
+      ) {
+
+        // 切换队伍
         gameState.currentAnswerTeam++;
-      } else {
-        alert('必答题阶段结束！');
-        switchMode('home');
-        startContainer.style.display = 'block';
+
+        // ===== 显示开始答题按钮 =====
+        startContainer.style.display = 'flex';
+
         questionContainer.style.display = 'none';
+
+        stopTimer();
+
+        questionText.innerText = '';
+
+        optionsContainer.innerHTML = '';
+
+        resultArea.innerText = '';
+
+        timerElement.innerText = '';
+
+        return;
+      }
+
+      // ===== 全部结束 =====
+      else {
+
+        alert('必答题阶段结束！');
+
+        switchMode('home');
+
+        startContainer.style.display = 'flex';
+
+        questionContainer.style.display = 'none';
+
+        stopTimer();
+
+        timerElement.innerText = '';
+
         return;
       }
     }
