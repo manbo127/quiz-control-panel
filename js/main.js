@@ -10,7 +10,7 @@ const resultArea = document.getElementById('result-area');
 const teamInfo = document.getElementById('team-info');
 const teamSelector = document.getElementById('team-selector');
 const riskSelector = document.getElementById('risk-selector');
-
+const timerElement = document.getElementById('timer');
 const startContainer = document.getElementById('start-container');
 const questionContainer = document.getElementById('question-container');
 
@@ -27,6 +27,81 @@ let hasSubmitted = false;
 // ===== 风险题状态 =====
 let currentRiskTeam = 1;
 let currentRiskPoints = 0;
+let timer = null;
+let timeLeft = 0;
+
+// ===== 开始倒计时 =====
+function startTimer(seconds) {
+
+  clearInterval(timer);
+
+  timeLeft = seconds;
+
+  timerElement.innerText =
+    `剩余时间：${timeLeft} 秒`;
+
+  timer = setInterval(() => {
+
+    timeLeft--;
+
+    timerElement.innerText =
+      `剩余时间：${timeLeft} 秒`;
+
+    // ===== 时间到 =====
+    if (timeLeft <= 0) {
+
+      clearInterval(timer);
+
+      timerElement.innerText =
+        '时间到！';
+
+      // 防止重复提交
+      if (hasSubmitted) return;
+
+      hasSubmitted = true;
+
+      submitBtn.disabled = true;
+
+      // ===== 必答题 =====
+      if (gameState.mode === 'answer') {
+
+        resultArea.innerText =
+          '超时！本题作答失败';
+
+        gameState.teams[
+          gameState.currentAnswerTeam - 1
+        ].answerCount++;
+      }
+
+      // ===== 风险题 =====
+      else if (gameState.mode === 'risk') {
+
+        resultArea.innerText =
+          `超时！ -${currentRiskPoints}分`;
+
+        updateScore(
+          currentRiskTeam,
+          -currentRiskPoints
+        );
+
+        renderScoreboard();
+
+        endAnswerBtn.style.display = 'none';
+
+        correctBtn.style.display = 'none';
+
+        wrongBtn.style.display = 'none';
+      }
+    }
+
+  }, 1000);
+}
+
+// ===== 停止倒计时 =====
+function stopTimer() {
+
+  clearInterval(timer);
+}
 
 // ===== 更新当前队伍 =====
 function updateCurrentTeamInfo() {
@@ -131,6 +206,8 @@ function renderRiskSelector() {
       // 只显示题干
       questionText.innerText =
         question.question;
+
+      startTimer(60);
 
       optionsContainer.innerHTML = '';
 
@@ -281,6 +358,7 @@ submitBtn.onclick = () => {
   }
 
   hasSubmitted = true;
+  stopTimer();
 
   submitBtn.disabled = true;
 
@@ -341,6 +419,8 @@ submitBtn.onclick = () => {
 // ===== 风险题结束作答 =====
 endAnswerBtn.onclick = () => {
 
+  stopTimer();
+
   const q =
     gameState.currentQuestion;
 
@@ -395,6 +475,8 @@ wrongBtn.onclick = () => {
 
 // ===== 下一题（统一逻辑）=====
 nextBtn.onclick = () => {
+
+  stopTimer();
 
   resultArea.innerText = '';
 
@@ -451,7 +533,7 @@ nextBtn.onclick = () => {
 
     const team =
       gameState.teams[
-        gameState.currentAnswerTeam - 1
+      gameState.currentAnswerTeam - 1
       ];
 
     if (
@@ -491,6 +573,11 @@ nextBtn.onclick = () => {
   }
 
   renderQuestion();
+
+  if (gameState.mode === 'answer') {
+
+    startTimer(30);
+  }
 };
 
 // ===== 开始答题 =====
@@ -524,6 +611,11 @@ startBtn.onclick = () => {
   }
 
   renderQuestion();
+
+  if (gameState.mode === 'answer') {
+
+    startTimer(30);
+  }
 };
 
 // ===== 页面初始化 =====

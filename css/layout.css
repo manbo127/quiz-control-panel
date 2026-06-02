@@ -159,7 +159,9 @@ body {
 
   background:linear-gradient(135deg,#4f8cff,#2563eb);
 
-  -webkit-background-clip:text;
+  background-clip: text;
+
+  -webkit-background-clip: text;
 
   -webkit-text-fill-color:transparent;
 

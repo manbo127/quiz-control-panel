@@ -148,3 +148,20 @@ button:active {
     transform: scale(1);
   }
 }
+
+/* ===== 倒计时 ===== */
+
+.timer{
+
+  margin-top:20px;
+
+  font-size:32px;
+
+  font-weight:700;
+
+  color:#ef4444;
+
+  text-align:center;
+
+  letter-spacing:2px;
+}
