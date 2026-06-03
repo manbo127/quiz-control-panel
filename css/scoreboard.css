@@ -48,23 +48,19 @@
 
 /* ===== 单个队伍 ===== */
 
-.score-item{
-
+/* ===== 单个队伍 ===== */
+.score-item {
   background:#f8fafc;
-
   border:2px solid #e2e8f0;
-
   border-radius:16px;
-
   padding:18px 20px;
-
   display:flex;
-
   justify-content:space-between;
-
   align-items:center;
 
-  transition:0.2s;
+  /* ===== 新增动画 ===== */
+  transform: translateY(0);
+  transition: transform 0.6s ease, background 0.3s;
 }
 
 
