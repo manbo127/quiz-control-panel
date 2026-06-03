@@ -45,17 +45,54 @@ function startTimer(seconds) {
       submitBtn.disabled = true;
 
       if (gameState.mode === 'answer') {
-        resultArea.innerText = '超时！本题作答失败';
-        gameState.teams[gameState.currentAnswerTeam - 1].answerCount++;
-      } else if (gameState.mode === 'risk') {
-        resultArea.innerText = `超时！ -${currentRiskPoints}分`;
-        updateScore(currentRiskTeam, -currentRiskPoints);
-        renderScoreboard();
-        endAnswerBtn.style.display = 'none';
-        correctBtn.style.display = 'none';
-        wrongBtn.style.display = 'none';
-        nextBtn.style.display = 'inline-block';
-      }
+
+  resultArea.innerText = '超时！本题作答失败';
+
+  gameState.teams[
+    gameState.currentAnswerTeam - 1
+  ].answerCount++;
+
+}
+
+else if (gameState.mode === 'buzzer') {
+
+  if (gameState.selectedTeam) {
+
+    resultArea.innerText =
+      '超时！抢答失败，扣10分';
+
+    updateScore(
+      gameState.selectedTeam,
+      -10
+    );
+
+    renderScoreboard();
+
+  }
+
+}
+
+else if (gameState.mode === 'risk') {
+
+  resultArea.innerText =
+    `超时！ -${currentRiskPoints}分`;
+
+  updateScore(
+    currentRiskTeam,
+    -currentRiskPoints
+  );
+
+  renderScoreboard();
+
+  endAnswerBtn.style.display = 'none';
+
+  correctBtn.style.display = 'none';
+
+  wrongBtn.style.display = 'none';
+
+  nextBtn.style.display = 'inline-block';
+
+}
     }
   }, 1000);
 }
@@ -99,6 +136,7 @@ function renderTeamSelector() {
       gameState.selectedTeam = team.id;
       renderTeamSelector();
       updateCurrentTeamInfo();
+      startTimer(30);
     };
     teamSelector.appendChild(btn);
   });
