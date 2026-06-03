@@ -13,7 +13,7 @@ export function switchMode(mode){
 
   if(mode === 'home'){
     homePage.classList.add('active');
-  }else{
+  } else {
     questionPage.classList.add('active');
   }
 
@@ -29,6 +29,10 @@ export function switchMode(mode){
 
   if(mode === 'risk'){
     title.innerText = '风险题';
+  }
+
+  if(mode === 'bonus'){
+    title.innerText = '加赛题';
   }
 
   renderScoreboard();

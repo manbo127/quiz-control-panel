@@ -22,6 +22,7 @@ const nextBtn = document.getElementById('next-btn');
 const endAnswerBtn = document.getElementById('end-answer-btn');
 const correctBtn = document.getElementById('correct-btn');
 const wrongBtn = document.getElementById('wrong-btn');
+const bonusMatchInfo = document.getElementById('bonus-match-info');
 
 let hasSubmitted = false;
 let currentRiskTeam = 1;
@@ -29,11 +30,16 @@ let currentRiskPoints = 0;
 let timer = null;
 let timeLeft = 0;
 
+// ===== 加赛题状态 =====
+let bonusQueue = [];
+let currentBonusPair = [];
+
 // ===== 开始倒计时 =====
 function startTimer(seconds) {
   clearInterval(timer);
   timeLeft = seconds;
   timerElement.innerText = `剩余时间：${timeLeft} 秒`;
+
   timer = setInterval(() => {
     timeLeft--;
     timerElement.innerText = `剩余时间：${timeLeft} 秒`;
@@ -45,54 +51,46 @@ function startTimer(seconds) {
       submitBtn.disabled = true;
 
       if (gameState.mode === 'answer') {
+        resultArea.innerText = '超时！本题作答失败';
+        gameState.teams[gameState.currentAnswerTeam - 1].answerCount++;
+      } else if (gameState.mode === 'buzzer') {
+        if (gameState.selectedTeam) {
+          resultArea.innerText = '超时！抢答失败，另一队获胜';
+          const winner = gameState.teams.find(t => t.id !== gameState.selectedTeam);
+          updateScore(winner.id, 10);
+          renderScoreboard();
+        }
+      } else if (gameState.mode === 'risk') {
+        resultArea.innerText = `超时！ -${currentRiskPoints}分`;
+        updateScore(currentRiskTeam, -currentRiskPoints);
+        renderScoreboard();
+        endAnswerBtn.style.display = 'none';
+        correctBtn.style.display = 'none';
+        wrongBtn.style.display = 'none';
+        nextBtn.style.display = 'inline-block';
+      } else if (gameState.mode === 'bonus') {
 
-  resultArea.innerText = '超时！本题作答失败';
+        // 没有人点击队伍
+        if (!gameState.selectedTeam) {
 
-  gameState.teams[
-    gameState.currentAnswerTeam - 1
-  ].answerCount++;
+          resultArea.innerText =
+            '超时！无人抢答';
 
-}
+          return;
 
-else if (gameState.mode === 'buzzer') {
+        }
 
-  if (gameState.selectedTeam) {
+        const winner = currentBonusPair.find(
+          t => t.id !== gameState.selectedTeam
+        );
 
-    resultArea.innerText =
-      '超时！抢答失败，扣10分';
+        updateScore(winner.id, 5);
 
-    updateScore(
-      gameState.selectedTeam,
-      -10
-    );
+        resultArea.innerText =
+          `超时！${winner.name} 获胜 +5分`;
 
-    renderScoreboard();
-
-  }
-
-}
-
-else if (gameState.mode === 'risk') {
-
-  resultArea.innerText =
-    `超时！ -${currentRiskPoints}分`;
-
-  updateScore(
-    currentRiskTeam,
-    -currentRiskPoints
-  );
-
-  renderScoreboard();
-
-  endAnswerBtn.style.display = 'none';
-
-  correctBtn.style.display = 'none';
-
-  wrongBtn.style.display = 'none';
-
-  nextBtn.style.display = 'inline-block';
-
-}
+        renderScoreboard();
+      }
     }
   }, 1000);
 }
@@ -103,7 +101,7 @@ function stopTimer() {
   timerElement.innerText = '';
 }
 
-// ===== 更新当前队伍 =====
+// ===== 更新当前队伍信息 =====
 function updateCurrentTeamInfo() {
   if (gameState.mode === 'answer') {
     const team = gameState.teams[gameState.currentAnswerTeam - 1];
@@ -118,6 +116,8 @@ function updateCurrentTeamInfo() {
   } else if (gameState.mode === 'risk') {
     const team = gameState.teams[currentRiskTeam - 1];
     teamInfo.innerText = `当前风险题队伍：${team.name}`;
+  } else if (gameState.mode === 'bonus') {
+    teamInfo.innerText = `加赛题：${currentBonusPair[0].name} vs ${currentBonusPair[1].name}`;
   }
 }
 
@@ -125,14 +125,12 @@ function updateCurrentTeamInfo() {
 function renderTeamSelector() {
   teamSelector.innerHTML = '';
   if (gameState.mode !== 'buzzer') return;
-
   gameState.teams.forEach(team => {
     const btn = document.createElement('button');
     btn.className = 'team-button';
     btn.innerText = team.name;
     if (gameState.selectedTeam === team.id) btn.classList.add('active');
     btn.onclick = () => {
-      if (hasSubmitted) return;
       gameState.selectedTeam = team.id;
       renderTeamSelector();
       updateCurrentTeamInfo();
@@ -146,7 +144,6 @@ function renderTeamSelector() {
 function renderRiskSelector() {
   riskSelector.innerHTML = '';
   if (gameState.mode !== 'risk') return;
-
   [20, 30, 40].forEach(score => {
     const btn = document.createElement('button');
     btn.className = 'team-button';
@@ -156,22 +153,14 @@ function renderRiskSelector() {
       gameState.selectedRisk = score;
       const question = getRandomQuestion('risk');
       gameState.currentQuestion = question;
-
-      if (!question) {
-        questionText.innerText = '该分值暂无题目';
-        return;
-      }
-
+      if (!question) { questionText.innerText = '该分值暂无题目'; return; }
       questionText.innerText = question.question;
       optionsContainer.innerHTML = '';
       resultArea.innerText = '';
-
       submitBtn.style.display = 'none';
       endAnswerBtn.style.display = 'inline-block';
       correctBtn.style.display = 'none';
       wrongBtn.style.display = 'none';
-
-      // 风险题作答阶段才启动计时器
       startTimer(60);
     };
     riskSelector.appendChild(btn);
@@ -182,16 +171,9 @@ function renderRiskSelector() {
 function renderQuestion() {
   hasSubmitted = false;
   submitBtn.disabled = false;
-
   const question = getRandomQuestion(gameState.mode);
   gameState.currentQuestion = question;
-
-  if (!question) {
-    questionText.innerText = '没有更多题目';
-    optionsContainer.innerHTML = '';
-    return;
-  }
-
+  if (!question) { questionText.innerText = '没有更多题目'; optionsContainer.innerHTML = ''; return; }
   questionText.innerText = question.question;
   optionsContainer.innerHTML = '';
   resultArea.innerText = '';
@@ -209,11 +191,10 @@ function renderQuestion() {
         gameState.selectedAnswers = [option];
       } else {
         div.classList.toggle('selected');
-        if (gameState.selectedAnswers.includes(option)) {
+        if (gameState.selectedAnswers.includes(option))
           gameState.selectedAnswers = gameState.selectedAnswers.filter(a => a !== option);
-        } else {
+        else
           gameState.selectedAnswers.push(option);
-        }
       }
     };
     optionsContainer.appendChild(div);
@@ -221,7 +202,6 @@ function renderQuestion() {
 
   renderTeamSelector();
   updateCurrentTeamInfo();
-
   submitBtn.style.display = 'inline-block';
   endAnswerBtn.style.display = 'none';
   correctBtn.style.display = 'none';
@@ -230,44 +210,43 @@ function renderQuestion() {
   if (gameState.mode === 'answer') startTimer(30);
 }
 
-// ===== 提交普通题 =====
+// ===== 提交答案（普通题+加赛题统一） =====
 submitBtn.onclick = () => {
   if (hasSubmitted) return;
   const q = gameState.currentQuestion;
   if (!q) return;
   if (gameState.selectedAnswers.length === 0) { alert('请选择答案'); return; }
-
-  let targetTeamId = gameState.mode === 'answer' ? gameState.currentAnswerTeam : gameState.selectedTeam;
-
   hasSubmitted = true;
   stopTimer();
   submitBtn.disabled = true;
 
+  if (gameState.mode === 'bonus') {
+    const selected = [...gameState.selectedAnswers].sort().join(',');
+    const answer = [...q.answer].sort().join(',');
+    const isCorrect = selected === answer;
+    const winner = isCorrect ? currentBonusPair.find(t => t.id === gameState.selectedTeam)
+      : currentBonusPair.find(t => t.id !== gameState.selectedTeam);
+    updateScore(winner.id, 5);
+    resultArea.innerText = `加赛题胜者：${winner.name} +5分`;
+    renderScoreboard();
+    return;
+  }
+
+  let targetTeamId = gameState.mode === 'answer' ? gameState.currentAnswerTeam : gameState.selectedTeam;
   const selected = [...gameState.selectedAnswers].sort().join(',');
   const answer = [...q.answer].sort().join(',');
   const isCorrect = selected === answer;
   const points = 10;
-
-  if (isCorrect) {
-    resultArea.innerText = `回答正确！ +${points}分`;
-    updateScore(targetTeamId, points);
-  } else {
-    if (gameState.mode === 'answer') {
-      resultArea.innerText = `回答错误！正确答案：${q.answer.join(',')}`;
-    } else {
-      resultArea.innerText = `回答错误！正确答案：${q.answer.join(',')} 扣${points}分`;
-      updateScore(targetTeamId, -points);
-    }
+  if (isCorrect) resultArea.innerText = `回答正确！ +${points}分`, updateScore(targetTeamId, points);
+  else {
+    if (gameState.mode === 'answer') resultArea.innerText = `回答错误！正确答案：${q.answer.join(',')}`;
+    else resultArea.innerText = `回答错误！正确答案：${q.answer.join(',')} 扣${points}分`, updateScore(targetTeamId, -points);
   }
-
-  if (gameState.mode === 'answer') {
-    gameState.teams[targetTeamId - 1].answerCount++;
-  }
-
+  if (gameState.mode === 'answer') gameState.teams[targetTeamId - 1].answerCount++;
   renderScoreboard();
 };
 
-// ===== 风险题结束作答 =====
+// ===== 风险题结束作答逻辑 =====
 endAnswerBtn.onclick = () => {
   stopTimer();
   const q = gameState.currentQuestion;
@@ -278,7 +257,6 @@ endAnswerBtn.onclick = () => {
   wrongBtn.style.display = 'inline-block';
 };
 
-// ===== 风险题结果 =====
 correctBtn.onclick = () => {
   updateScore(currentRiskTeam, currentRiskPoints);
   resultArea.innerText = `回答正确！ +${currentRiskPoints}分`;
@@ -305,19 +283,16 @@ nextBtn.onclick = () => {
   hasSubmitted = false;
   submitBtn.disabled = false;
 
+  if (gameState.mode === 'bonus') {
+    nextBonusPair();
+    return;
+  }
+
   if (gameState.mode === 'risk') {
     currentRiskTeam++;
     riskSelector.innerHTML = '';
     timerElement.innerText = '';
-
-    if (currentRiskTeam > gameState.teams.length) {
-      alert('风险题阶段结束！');
-      switchMode('home');
-      startContainer.style.display = 'block';
-      questionContainer.style.display = 'none';
-      return;
-    }
-
+    if (currentRiskTeam > gameState.teams.length) { alert('风险题阶段结束！'); switchMode('home'); startContainer.style.display = 'block'; questionContainer.style.display = 'none'; return; }
     updateCurrentTeamInfo();
     questionText.innerText = '请选择分值';
     renderRiskSelector();
@@ -329,87 +304,44 @@ nextBtn.onclick = () => {
   }
 
   if (gameState.mode === 'answer') {
-
-    const team =
-      gameState.teams[
-      gameState.currentAnswerTeam - 1
-      ];
-
-    // 当前队伍答完
-    if (
-      team.answerCount >=
-      gameState.maxAnswerQuestions
-    ) {
-
-      // 还有下一队
-      if (
-        gameState.currentAnswerTeam <
-        gameState.teams.length
-      ) {
-
-        // 切换队伍
+    const team = gameState.teams[gameState.currentAnswerTeam - 1];
+    if (team.answerCount >= gameState.maxAnswerQuestions) {
+      if (gameState.currentAnswerTeam < gameState.teams.length) {
         gameState.currentAnswerTeam++;
-
-        // ===== 显示开始答题按钮 =====
         startContainer.style.display = 'flex';
-
         questionContainer.style.display = 'none';
-
         stopTimer();
-
         questionText.innerText = '';
-
         optionsContainer.innerHTML = '';
-
         resultArea.innerText = '';
-
         timerElement.innerText = '';
-
         return;
-      }
-
-      // ===== 全部结束 =====
-      else {
-
+      } else {
         alert('必答题阶段结束！');
-
         switchMode('home');
-
         startContainer.style.display = 'flex';
-
         questionContainer.style.display = 'none';
-
         stopTimer();
-
         timerElement.innerText = '';
-
         return;
       }
     }
   }
 
   if (gameState.mode === 'buzzer') {
-
-  stopTimer();
-
-  hasSubmitted = false;
-
-  gameState.selectedTeam = null;
-
-  timerElement.innerText = '';
-
-  resultArea.innerText = '';
-
-  submitBtn.disabled = false;
-
-  renderTeamSelector();
-
-}
+    stopTimer();
+    hasSubmitted = false;
+    gameState.selectedTeam = null;
+    timerElement.innerText = '';
+    resultArea.innerText = '';
+    submitBtn.disabled = false;
+    renderTeamSelector();
+  }
 
   renderQuestion();
 };
 
-// ===== 开始答题按钮 =====
+// ===== 开始答题按钮逻辑 =====
 startBtn.onclick = () => {
   startContainer.style.display = 'none';
   questionContainer.style.display = 'block';
@@ -427,8 +359,103 @@ startBtn.onclick = () => {
     return;
   }
 
+  if (gameState.mode === 'bonus') {
+    bonusMatchInfo.style.display = 'none';
+    renderBonusQuestion();
+    return;
+  }
+
   renderQuestion();
 };
+
+// ===== 加赛题相关逻辑 =====
+function startBonus() {
+  // 构建平分队伍队列
+  bonusQueue = [];
+  const sortedTeams = [...gameState.teams].sort((a, b) => b.score - a.score);
+  for (let i = 0; i < sortedTeams.length - 1; i++) {
+    if (sortedTeams[i].score === sortedTeams[i + 1].score) {
+      bonusQueue.push([sortedTeams[i], sortedTeams[i + 1]]);
+    }
+  }
+  if (bonusQueue.length === 0) { alert('没有需要加赛的平分队伍'); switchMode('home'); return; }
+  gameState.mode = 'bonus';
+  nextBonusPair();
+}
+
+function nextBonusPair() {
+
+  if (bonusQueue.length === 0) {
+
+    alert('加赛题结束');
+
+    switchMode('home');
+
+    bonusMatchInfo.style.display = 'none';
+
+    return;
+
+  }
+
+  currentBonusPair = bonusQueue.shift();
+
+  startContainer.style.display = 'flex';
+
+  questionContainer.style.display = 'none';
+
+  bonusMatchInfo.style.display = 'block';
+
+  bonusMatchInfo.innerText =
+    `${currentBonusPair[0].name}
+     VS
+     ${currentBonusPair[1].name}`;
+
+}
+
+function renderBonusQuestion() {
+  teamSelector.innerHTML = '';
+  hasSubmitted = false;
+  submitBtn.disabled = false;
+  const question = getRandomQuestion('bonus');
+  gameState.currentQuestion = question;
+  questionText.innerText = question.question;
+  optionsContainer.innerHTML = '';
+  resultArea.innerText = '';
+  gameState.selectedAnswers = [];
+
+  currentBonusPair.forEach(team => {
+    const btn = document.createElement('button');
+    btn.className = 'team-button';
+    btn.innerText = team.name;
+    btn.onclick = () => {
+      gameState.selectedTeam = team.id;
+      updateCurrentTeamInfo();
+      startTimer(30);
+    };
+    teamSelector.appendChild(btn);
+  });
+
+  question.options.forEach(option => {
+    const div = document.createElement('div');
+    div.className = 'option';
+    div.innerText = option;
+    div.onclick = () => {
+      if (hasSubmitted) return;
+      document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+      div.classList.add('selected');
+      gameState.selectedAnswers = [option];
+    };
+    optionsContainer.appendChild(div);
+  });
+
+  submitBtn.style.display = 'inline-block';
+  endAnswerBtn.style.display = 'none';
+  correctBtn.style.display = 'none';
+  wrongBtn.style.display = 'none';
+
+  startContainer.style.display = 'none';
+  questionContainer.style.display = 'block';
+}
 
 // ===== 页面初始化 =====
 switchMode('home');
@@ -436,7 +463,8 @@ renderScoreboard();
 startContainer.style.display = 'block';
 questionContainer.style.display = 'none';
 
-// ===== 切换模式 =====
+// ===== 对外暴露加赛题 =====
+window.startBonus = startBonus;
 window.startQuestion = () => {
   stopTimer();
   startContainer.style.display = 'block';

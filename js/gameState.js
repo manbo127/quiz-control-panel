@@ -58,6 +58,16 @@ export const gameState = {
       { id: 206, question: '风险题6：解释相对论的核心原理', answer: ['时间和空间相对性，质能方程 E=mc²'], used: false, score: 40 },
       { id: 207, question: '风险题7：简述量子力学的不确定性原理', answer: ['位置和动量不能同时精确测量'], used: false, score: 40 }
     ]
-  }
+  },
+
+  // ===== 加赛题 =====
+bonusQuestions: Array.from({ length: 30 }, (_, i) => ({
+    id: i + 300,
+    question: `加赛题${i + 1}：这是题目内容？`,
+    options: ['A选项', 'B选项', 'C选项', 'D选项'],
+    answer: ['A选项'],
+    used: false,
+    type: 'single'
+  }))
 
 };

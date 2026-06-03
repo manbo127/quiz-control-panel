@@ -42,6 +42,14 @@ export function getRandomQuestion(mode, riskScore = null) {
 
   }
 
+  else if (mode === 'bonus') {
+
+    pool =
+      gameState.bonusQuestions
+        .filter(q => !q.used);
+
+  }
+
   // ===== 没题了 =====
   if (pool.length === 0) {
 
@@ -86,4 +94,7 @@ export function resetQuestions() {
 
     });
 
+  gameState.bonusQuestions.forEach(q => {
+    q.used = false;
+  });
 }
