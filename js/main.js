@@ -221,16 +221,50 @@ submitBtn.onclick = () => {
   submitBtn.disabled = true;
 
   if (gameState.mode === 'bonus') {
-    const selected = [...gameState.selectedAnswers].sort().join(',');
-    const answer = [...q.answer].sort().join(',');
-    const isCorrect = selected === answer;
-    const winner = isCorrect ? currentBonusPair.find(t => t.id === gameState.selectedTeam)
-      : currentBonusPair.find(t => t.id !== gameState.selectedTeam);
-    updateScore(winner.id, 5);
-    resultArea.innerText = `加赛题胜者：${winner.name} +5分`;
-    renderScoreboard();
-    return;
+
+  const selected =
+    [...gameState.selectedAnswers]
+      .sort()
+      .join(',');
+
+  const answer =
+    [...q.answer]
+      .sort()
+      .join(',');
+
+  const isCorrect =
+    selected === answer;
+
+  let winner;
+
+  if (isCorrect) {
+
+    winner =
+      currentBonusPair.find(
+        t => t.id === gameState.selectedTeam
+      );
+
+    resultArea.innerText =
+      `回答正确！\n正确答案：${q.answer.join('、')}\n${winner.name} 获胜 +5分`;
+
+  } else {
+
+    winner =
+      currentBonusPair.find(
+        t => t.id !== gameState.selectedTeam
+      );
+
+    resultArea.innerText =
+      `回答错误！\n正确答案：${q.answer.join('、')}\n${winner.name} 获胜 +5分`;
+
   }
+
+  updateScore(winner.id, 5);
+
+  renderScoreboard();
+
+  return;
+}
 
   let targetTeamId = gameState.mode === 'answer' ? gameState.currentAnswerTeam : gameState.selectedTeam;
   const selected = [...gameState.selectedAnswers].sort().join(',');
@@ -424,16 +458,37 @@ function renderBonusQuestion() {
   gameState.selectedAnswers = [];
 
   currentBonusPair.forEach(team => {
-    const btn = document.createElement('button');
-    btn.className = 'team-button';
-    btn.innerText = team.name;
-    btn.onclick = () => {
-      gameState.selectedTeam = team.id;
-      updateCurrentTeamInfo();
-      startTimer(30);
-    };
-    teamSelector.appendChild(btn);
-  });
+
+  const btn = document.createElement('button');
+
+  btn.className = 'team-button';
+
+  btn.innerText = team.name;
+
+  if (gameState.selectedTeam === team.id) {
+    btn.classList.add('active');
+  }
+
+  btn.onclick = () => {
+
+    if (hasSubmitted) return;
+
+    gameState.selectedTeam = team.id;
+
+    // 清除其他按钮选中状态
+    document
+      .querySelectorAll('#team-selector .team-button')
+      .forEach(b => b.classList.remove('active'));
+
+    btn.classList.add('active');
+
+    startTimer(30);
+
+  };
+
+  teamSelector.appendChild(btn);
+
+});
 
   question.options.forEach(option => {
     const div = document.createElement('div');
