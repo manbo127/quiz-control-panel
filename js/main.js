@@ -448,6 +448,7 @@ function nextBonusPair() {
 
 function renderBonusQuestion() {
   teamSelector.innerHTML = '';
+  timerElement.style.display = 'none';
   hasSubmitted = false;
   submitBtn.disabled = false;
   const question = getRandomQuestion('bonus');
@@ -474,6 +475,7 @@ function renderBonusQuestion() {
     if (hasSubmitted) return;
 
     gameState.selectedTeam = team.id;
+    timerElement.style.display = 'block';
 
     // 清除其他按钮选中状态
     document
