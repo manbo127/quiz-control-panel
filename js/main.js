@@ -389,9 +389,22 @@ nextBtn.onclick = () => {
   }
 
   if (gameState.mode === 'buzzer') {
-    gameState.selectedTeam = null;
-    renderTeamSelector();
-  }
+
+  stopTimer();
+
+  hasSubmitted = false;
+
+  gameState.selectedTeam = null;
+
+  timerElement.innerText = '';
+
+  resultArea.innerText = '';
+
+  submitBtn.disabled = false;
+
+  renderTeamSelector();
+
+}
 
   renderQuestion();
 };
