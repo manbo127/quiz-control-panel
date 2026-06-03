@@ -439,10 +439,8 @@ function nextBonusPair() {
 
   bonusMatchInfo.style.display = 'block';
 
-  bonusMatchInfo.innerText =
-    `${currentBonusPair[0].name}
-     VS
-     ${currentBonusPair[1].name}`;
+  bonusMatchInfo.innerHTML =
+    `${currentBonusPair[0].name}&nbsp;&nbsp;\n${currentBonusPair[1].name}&nbsp;&nbsp;`;
 
 }
 
