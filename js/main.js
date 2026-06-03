@@ -18,7 +18,7 @@ const questionContainer = document.getElementById('question-container');
 const startBtn = document.getElementById('start-btn');
 const submitBtn = document.getElementById('submit-btn');
 const nextBtn = document.getElementById('next-btn');
-
+const fullscreenBtn = document.getElementById('fullscreen-btn');
 const endAnswerBtn = document.getElementById('end-answer-btn');
 const correctBtn = document.getElementById('correct-btn');
 const wrongBtn = document.getElementById('wrong-btn');
@@ -222,49 +222,49 @@ submitBtn.onclick = () => {
 
   if (gameState.mode === 'bonus') {
 
-  const selected =
-    [...gameState.selectedAnswers]
-      .sort()
-      .join(',');
+    const selected =
+      [...gameState.selectedAnswers]
+        .sort()
+        .join(',');
 
-  const answer =
-    [...q.answer]
-      .sort()
-      .join(',');
+    const answer =
+      [...q.answer]
+        .sort()
+        .join(',');
 
-  const isCorrect =
-    selected === answer;
+    const isCorrect =
+      selected === answer;
 
-  let winner;
+    let winner;
 
-  if (isCorrect) {
+    if (isCorrect) {
 
-    winner =
-      currentBonusPair.find(
-        t => t.id === gameState.selectedTeam
-      );
+      winner =
+        currentBonusPair.find(
+          t => t.id === gameState.selectedTeam
+        );
 
-    resultArea.innerText =
-      `回答正确！\n正确答案：${q.answer.join('、')}\n${winner.name} 获胜 +5分`;
+      resultArea.innerText =
+        `回答正确！\n正确答案：${q.answer.join('、')}\n${winner.name} 获胜 +5分`;
 
-  } else {
+    } else {
 
-    winner =
-      currentBonusPair.find(
-        t => t.id !== gameState.selectedTeam
-      );
+      winner =
+        currentBonusPair.find(
+          t => t.id !== gameState.selectedTeam
+        );
 
-    resultArea.innerText =
-      `回答错误！\n正确答案：${q.answer.join('、')}\n${winner.name} 获胜 +5分`;
+      resultArea.innerText =
+        `回答错误！\n正确答案：${q.answer.join('、')}\n${winner.name} 获胜 +5分`;
 
+    }
+
+    updateScore(winner.id, 5);
+
+    renderScoreboard();
+
+    return;
   }
-
-  updateScore(winner.id, 5);
-
-  renderScoreboard();
-
-  return;
-}
 
   let targetTeamId = gameState.mode === 'answer' ? gameState.currentAnswerTeam : gameState.selectedTeam;
   const selected = [...gameState.selectedAnswers].sort().join(',');
@@ -458,37 +458,37 @@ function renderBonusQuestion() {
 
   currentBonusPair.forEach(team => {
 
-  const btn = document.createElement('button');
+    const btn = document.createElement('button');
 
-  btn.className = 'team-button';
+    btn.className = 'team-button';
 
-  btn.innerText = team.name;
+    btn.innerText = team.name;
 
-  if (gameState.selectedTeam === team.id) {
-    btn.classList.add('active');
-  }
+    if (gameState.selectedTeam === team.id) {
+      btn.classList.add('active');
+    }
 
-  btn.onclick = () => {
+    btn.onclick = () => {
 
-    if (hasSubmitted) return;
+      if (hasSubmitted) return;
 
-    gameState.selectedTeam = team.id;
-    timerElement.style.display = 'block';
+      gameState.selectedTeam = team.id;
+      timerElement.style.display = 'block';
 
-    // 清除其他按钮选中状态
-    document
-      .querySelectorAll('#team-selector .team-button')
-      .forEach(b => b.classList.remove('active'));
+      // 清除其他按钮选中状态
+      document
+        .querySelectorAll('#team-selector .team-button')
+        .forEach(b => b.classList.remove('active'));
 
-    btn.classList.add('active');
+      btn.classList.add('active');
 
-    startTimer(30);
+      startTimer(30);
 
-  };
+    };
 
-  teamSelector.appendChild(btn);
+    teamSelector.appendChild(btn);
 
-});
+  });
 
   question.options.forEach(option => {
     const div = document.createElement('div');
@@ -541,3 +541,38 @@ window.startQuestion = () => {
   wrongBtn.style.display = 'none';
   timerElement.innerText = '';
 };
+fullscreenBtn.onclick = () => {
+
+  if (!document.fullscreenElement) {
+
+    document.documentElement.requestFullscreen();
+
+    fullscreenBtn.innerText = '退出全屏';
+
+  } else {
+
+    document.exitFullscreen();
+
+    fullscreenBtn.innerText = '全屏';
+
+  }
+
+};
+document.addEventListener(
+  'fullscreenchange',
+  () => {
+
+    if (document.fullscreenElement) {
+
+      fullscreenBtn.innerText =
+        '退出全屏';
+
+    } else {
+
+      fullscreenBtn.innerText =
+        '全屏';
+
+    }
+
+  }
+);
