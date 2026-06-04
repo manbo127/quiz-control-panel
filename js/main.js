@@ -439,9 +439,19 @@ function nextBonusPair() {
 
   bonusMatchInfo.style.display = 'block';
 
-  bonusMatchInfo.innerHTML =
-    `${currentBonusPair[0].name}&nbsp;&nbsp;\n${currentBonusPair[1].name}&nbsp;&nbsp;`;
-
+  if (
+    currentBonusPair[0].name === '报警器检测室'
+  ) {
+    bonusMatchInfo.innerHTML =
+      `${currentBonusPair[0].name}\n${currentBonusPair[1].name}&nbsp;&nbsp;`;
+  } else if (currentBonusPair[1].name === '报警器检测室') {
+    bonusMatchInfo.innerHTML =
+      `${currentBonusPair[0].name}&nbsp;&nbsp;\n${currentBonusPair[1].name}`;
+  }
+  else {
+    bonusMatchInfo.innerHTML =
+      `${currentBonusPair[0].name}&nbsp;&nbsp;\n${currentBonusPair[1].name}&nbsp;&nbsp;`;
+  }
 }
 
 function renderBonusQuestion() {
