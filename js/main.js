@@ -188,7 +188,7 @@ function renderQuestion() {
       if (question.type === 'single') {
         document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
         div.classList.add('selected');
-        gameState.selectedAnswers = [option];
+        gameState.selectedAnswers = [option.charAt(0)];
       } else {
         div.classList.toggle('selected');
         if (gameState.selectedAnswers.includes(option))
@@ -508,7 +508,7 @@ function renderBonusQuestion() {
       if (hasSubmitted) return;
       document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
       div.classList.add('selected');
-      gameState.selectedAnswers = [option];
+      gameState.selectedAnswers = [option.charAt(0)];
     };
     optionsContainer.appendChild(div);
   });
