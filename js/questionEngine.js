@@ -1,4 +1,43 @@
-import { gameState } from './gameState.js';
+import {
+  gameState,
+  answerQuestionSets
+} from './gameState.js';
+
+function initializeTeamQuestionSets() {
+
+  // 已初始化
+  if (Object.keys(gameState.teamQuestionSets).length > 0) {
+    return;
+  }
+
+  // 题库编号
+  const setIds =
+    Object.keys(answerQuestionSets);
+
+  // Fisher-Yates 洗牌
+  for (let i = setIds.length - 1; i > 0; i--) {
+
+    const j =
+      Math.floor(Math.random() * (i + 1));
+
+    [setIds[i], setIds[j]] =
+      [setIds[j], setIds[i]];
+  }
+
+  // 分配题库
+  gameState.teams.forEach((team, index) => {
+
+    const setId = setIds[index];
+
+    gameState.teamQuestionSets[team.id] =
+      answerQuestionSets[setId].map(q => ({
+        ...q,
+        used: false
+      }));
+
+  });
+
+}
 
 // ===== 随机抽题 =====
 export function getRandomQuestion(mode, riskScore = null) {
@@ -8,11 +47,16 @@ export function getRandomQuestion(mode, riskScore = null) {
   // ===== 必答题 =====
   if (mode === 'answer') {
 
-    pool =
-      gameState.answerQuestions
-        .filter(q => !q.used);
+  initializeTeamQuestionSets();
 
-  }
+  const teamId =
+    gameState.currentAnswerTeam;
+
+  pool =
+    gameState.teamQuestionSets[teamId]
+      .filter(q => !q.used);
+
+}
 
   // ===== 抢答题 =====
   else if (mode === 'buzzer') {
@@ -73,10 +117,8 @@ export function getRandomQuestion(mode, riskScore = null) {
 // ===== 重置所有题目 =====
 export function resetQuestions() {
 
-  // 必答题
-  gameState.answerQuestions.forEach(q => {
-    q.used = false;
-  });
+  // 重新随机分配题库
+  gameState.teamQuestionSets = {};
 
   // 抢答题
   gameState.buzzerQuestions.forEach(q => {
@@ -94,7 +136,9 @@ export function resetQuestions() {
 
     });
 
+  // 加赛题
   gameState.bonusQuestions.forEach(q => {
     q.used = false;
   });
+
 }
