@@ -1,48 +1,48 @@
 /* ===== 积分榜整体 ===== */
 
-.scoreboard{
+.scoreboard {
 
-  width:320px;
+  width: 320px;
 
-  background:#ffffff;
+  background: #ffffff;
 
-  border-radius:24px;
+  border-radius: 24px;
 
-  padding:28px;
+  padding: 28px;
 
-  box-shadow:0 8px 24px rgba(0,0,0,0.06);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
 
-  display:flex;
+  display: flex;
 
-  flex-direction:column;
+  flex-direction: column;
 
-  gap:20px;
+  gap: 20px;
 }
 
 
 /* ===== 标题 ===== */
 
-.scoreboard h3{
+.scoreboard h3 {
 
-  font-size:28px;
+  font-size: 28px;
 
-  color:#1e293b;
+  color: #1e293b;
 
-  text-align:center;
+  text-align: center;
 
-  margin-bottom:10px;
+  margin-bottom: 10px;
 }
 
 
 /* ===== 积分列表 ===== */
 
-#scoreboard-list{
+#scoreboard-list {
 
-  display:flex;
+  display: flex;
 
-  flex-direction:column;
+  flex-direction: column;
 
-  gap:14px;
+  gap: 14px;
 }
 
 
@@ -50,13 +50,13 @@
 
 /* ===== 单个队伍 ===== */
 .score-item {
-  background:#f8fafc;
-  border:2px solid #e2e8f0;
-  border-radius:16px;
-  padding:18px 20px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 18px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
   /* ===== 新增动画 ===== */
   transform: translateY(0);
@@ -66,79 +66,77 @@
 
 /* ===== 悬停效果 ===== */
 
-.score-item:hover{
+.score-item:hover {
 
-  background:#eef4ff;
+  background: #eef4ff;
 
-  border-color:#4f8cff;
+  border-color: #4f8cff;
 }
 
 
 /* ===== 队伍名称 ===== */
 
-.score-team{
+.score-team {
 
-  font-size:18px;
+  font-size: 18px;
 
-  font-weight:600;
+  font-weight: 600;
 
-  color:#1e293b;
+  color: #1e293b;
 }
 
 
 /* ===== 分数 ===== */
 
-.score-points{
+.score-points {
 
-  font-size:22px;
+  font-size: 22px;
 
-  font-weight:700;
+  font-weight: 700;
 
-  color:#2563eb;
+  color: #2563eb;
 }
 
 
 /* ===== 返回主页按钮 ===== */
 
-.home-btn{
+.home-btn {
 
-  margin-top:auto;
+  margin-top: auto;
 
-  width:100%;
+  width: 100%;
 
-  padding:14px;
+  padding: 14px;
 
-  font-size:18px;
+  font-size: 18px;
 
-  border:none;
+  border: none;
 
-  border-radius:14px;
+  border-radius: 14px;
 
-  background:#4f8cff;
+  background: #4f8cff;
 
-  color:white;
+  color: white;
 
-  cursor:pointer;
+  cursor: pointer;
 
-  transition:0.2s;
+  transition: 0.2s;
 }
 
 
-.home-btn:hover{
+.home-btn:hover {
 
-  background:#3f7fff;
+  background: #3f7fff;
 
-  transform:translateY(-2px);
+  transform: translateY(-2px);
 }
 
 /* ===== 金色 ===== */
 .score-item.gold {
 
-  background: linear-gradient(
-    135deg,
-    #fb923c,
-    #ea580c
-  );
+  background: linear-gradient(135deg,
+      #fb923c,
+      #ea580c);
 
   color: white;
 
@@ -150,10 +148,10 @@
 
   background: linear-gradient(
     135deg,
-    #cbd5e1,
-    #94a3b8
-  );
-
+    #22c55e 30%,
+    #15803d 65%,
+    #064e3b 100%
+);
   color: white;
 
   font-weight: 700;
@@ -161,11 +159,9 @@
 
 .score-item.bronze {
 
-  background: linear-gradient(
-    135deg,
-    #60a5fa,
-    #2563eb
-  );
+  background: linear-gradient(135deg,
+      #60a5fa,
+      #2563eb);
 
   color: white;
 
