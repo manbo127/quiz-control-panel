@@ -5,11 +5,26 @@
   box-sizing: border-box;
 }
 
+/* ===== 根元素 —— 锁定缩放行为 ===== */
+html {
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: manipulation;
+}
+
 /* ===== 页面主体 ===== */
 body {
   font-family: "PingFang SC", "Microsoft YaHei", Arial, Helvetica, sans-serif;
   background: #f3f6fb; /* 浅灰背景 */
   color: #1e293b;       /* 深灰文字 */
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: manipulation;
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
 }
 
 /* ===== 页面显示控制 ===== */

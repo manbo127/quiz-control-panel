@@ -627,3 +627,19 @@ document.addEventListener(
 
   }
 );
+
+// ===== 禁止快捷键缩放 & 右键菜单（现场展示防误触） =====
+document.addEventListener('wheel', (e) => {
+  if (e.ctrlKey || e.metaKey) e.preventDefault();
+}, { passive: false });
+
+document.addEventListener('keydown', (e) => {
+  // 禁止 Ctrl +/-/0 缩放
+  if ((e.ctrlKey || e.metaKey) && ['+', '-', '0', '=', '_'].includes(e.key)) {
+    e.preventDefault();
+  }
+});
+
+document.addEventListener('contextmenu', (e) => {
+  e.preventDefault();
+});
