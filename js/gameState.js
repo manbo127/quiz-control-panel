@@ -505,14 +505,268 @@ export const gameState = {
   ],
 
   // ===== 抢答题 20道 =====
-  buzzerQuestions: Array.from({ length: 20 }, (_, i) => ({
-    id: i + 101,
-    question: `抢答题${i + 1}：这是题目内容？`,
-    options: ['A选项', 'B选项', 'C选项', 'D选项'],
-    answer: ['B选项'],
-    used: false,
-    type: 'single'
-  })),
+  buzzerQuestions: [
+    {
+      id: 101,
+      question: '《计量法》规定，国务院计量行政部门负责建立各种（）器具，作为统一全国量值的最高依据。',
+      options: [
+        'A. 计量基准',
+        'B. 计量标准',
+        'C. 工作计量',
+        'D. 标准物质'
+      ],
+      answer: ['A'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 102,
+      question: '我国《计量法》自（）起正式施行。',
+      options: [
+        'A. 1985年7月1日',
+        'B. 1986年7月1日',
+        'C. 1985年9月6日',
+        'D. 1987年1月1日'
+      ],
+      answer: ['B'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 103,
+      question: '国际单位制中，质量的基本单位是（）。',
+      options: [
+        'A. 克',
+        'B. 千克',
+        'C. 吨',
+        'D. 毫克'
+      ],
+      answer: ['B'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 104,
+      question: '强制检定的计量器具范围包括（）。',
+      options: [
+        'A. 所有计量器具',
+        'B. 社会公用计量标准器具，部门和企业、事业单位使用的最高计量标准器具，以及用于贸易结算、安全防护、医疗卫生、环境监测方面列入强制检定目录的工作计量器具',
+        'C. 仅标准计量器具',
+        'D. 仅工作计量器具'
+      ],
+      answer: ['B'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 105,
+      question: '计量器具的检定是指（）。',
+      options: [
+        'A. 为评定计量器具的计量性能，确定其是否合格所进行的全部工作',
+        'B. 修理计量器具的过程',
+        'C. 仅对计量器具进行校准',
+        'D. 制造计量器具的过程'
+      ],
+      answer: ['A'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 106,
+      question: '国际单位制（SI）共有（）个基本单位。',
+      options: [
+        'A. 5',
+        'B. 6',
+        'C. 7',
+        'D. 8'
+      ],
+      answer: ['C'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 107,
+      question: '下列属于SI基本单位的是（）。',
+      options: [
+        'A. 牛顿',
+        'B. 焦耳',
+        'C. 安培',
+        'D. 伏特'
+      ],
+      answer: ['C'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 108,
+      question: '计量标准的考核由（）主持进行。',
+      options: [
+        'A. 任何行政机关',
+        'B. 人民政府计量行政部门',
+        'C. 企业主管部门',
+        'D. 行业协会'
+      ],
+      answer: ['B'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 109,
+      question: '测量不确定度表示指南的缩写是（）。',
+      options: [
+        'A. GUM',
+        'B. VIM',
+        'C. ISO',
+        'D. IEC'
+      ],
+      answer: ['A'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 110,
+      question: '凡制造在全国范围内从未生产过的计量器具新产品，必须经过（）。',
+      options: [
+        'A. 计量检定',
+        'B. 型式批准',
+        'C. 校准',
+        'D. 比对'
+      ],
+      answer: ['B'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 111,
+      question: '计量检定必须按照（）进行。',
+      options: [
+        'A. 国家计量检定系统表',
+        'B. 企业标准',
+        'C. 行业惯例',
+        'D. 任意规程'
+      ],
+      answer: ['A'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 112,
+      question: '根据《计量法》，使用计量器具不得（）。',
+      options: [
+        'A. 破坏其准确度，损害国家和消费者的利益',
+        'B. 进行校准',
+        'C. 进行检定',
+        'D. 进行维护'
+      ],
+      answer: ['A'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 113,
+      question: '计量技术法规包括计量检定规程、计量检定系统表和（）。',
+      options: [
+        'A. 计量技术规范',
+        'B. 产品标准',
+        'C. 操作规程',
+        'D. 校准方法'
+      ],
+      answer: ['A'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 114,
+      question: '企业、事业单位建立本单位使用的最高计量标准器具，须经（）主持考核合格后方可使用。',
+      options: [
+        'A. 任何计量技术机构',
+        'B. 有关人民政府计量行政部门',
+        'C. 企业自己',
+        'D. 行业协会'
+      ],
+      answer: ['B'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 115,
+      question: '量值传递是指通过（），将国家计量基准所复现的计量单位量值逐级传递到工作计量器具的活动。',
+      options: [
+        'A. 检定',
+        'B. 校准',
+        'C. 比对',
+        'D. 测试'
+      ],
+      answer: ['A'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 116,
+      question: '计量器具的校准是指（）。',
+      options: [
+        'A. 确定计量器具是否合格',
+        'B. 确定计量器具示值误差的一组操作',
+        'C. 修理计量器具',
+        'D. 制造计量器具'
+      ],
+      answer: ['B'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 117,
+      question: '计量纠纷的仲裁检定由（）进行。',
+      options: [
+        'A. 任何计量技术机构',
+        'B. 县级以上人民政府计量行政部门指定的有关计量机构',
+        'C. 企业',
+        'D. 个人'
+      ],
+      answer: ['B'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 118,
+      question: '测量结果应包含（）。',
+      options: [
+        'A. 仅测得值',
+        'B. 测得值和测量不确定度',
+        'C. 仅不确定度',
+        'D. 仅误差'
+      ],
+      answer: ['B'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 119,
+      question: 'SI词头"兆"（M）表示的因数是（）。',
+      options: [
+        'A. 10³',
+        'B. 10⁶',
+        'C. 10⁹',
+        'D. 10¹²'
+      ],
+      answer: ['B'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 120,
+      question: '法定计量单位是（）以法令形式规定允许使用的计量单位。',
+      options: [
+        'A. 国家',
+        'B. 行业',
+        'C. 企业',
+        'D. 国际组织'
+      ],
+      answer: ['A'],
+      used: false,
+      type: 'single'
+    }
+  ],
 
   // ===== 风险题（简述题） =====
   riskQuestions: {
@@ -531,15 +785,399 @@ export const gameState = {
     ]
   },
 
-  // ===== 加赛题 =====
-  bonusQuestions: Array.from({ length: 30 }, (_, i) => ({
-    id: i + 300,
-    question: `加赛题${i + 1}：这是题目内容？`,
-    options: ['A选项', 'B选项', 'C选项', 'D选项'],
-    answer: ['A选项'],
-    used: false,
-    type: 'single'
-  }))
+  // ===== 加赛题 30道 =====
+  bonusQuestions: [
+    {
+      id: 301,
+      question: '计量器具的准确度等级是根据（）划分的。',
+      options: [
+        'A. 计量器具的最大允许误差',
+        'B. 计量器具的价格',
+        'C. 计量器具的大小',
+        'D. 计量器具的品牌'
+      ],
+      answer: ['A'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 302,
+      question: '计量标准的期间核查是指（）。',
+      options: [
+        'A. 日常检查',
+        'B. 在两次检定/校准之间进行的核查',
+        'C. 年度检查',
+        'D. 首次检定'
+      ],
+      answer: ['B'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 303,
+      question: '计量器具的分辨力是指（）。',
+      options: [
+        'A. 引起计量器具示值可觉察变化的被测量的最小变化',
+        'B. 计量器具的测量范围',
+        'C. 计量器具的准确度',
+        'D. 计量器具的最大量程'
+      ],
+      answer: ['A'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 304,
+      question: '在计量比对中，参考值通常由（）提供。',
+      options: [
+        'A. 参比实验室',
+        'B. 主导实验室',
+        'C. 任何实验室',
+        'D. 企业实验室'
+      ],
+      answer: ['B'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 305,
+      question: '计量的特点是准确性、一致性、溯源性及（）。',
+      options: [
+        'A. 法制性',
+        'B. 随意性',
+        'C. 商业性',
+        'D. 艺术性'
+      ],
+      answer: ['A'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 306,
+      question: '测量仪器的漂移是指（）。',
+      options: [
+        'A. 测量仪器计量特性随时间的缓慢变化',
+        'B. 测量仪器突然损坏',
+        'C. 测量仪器的校准过程',
+        'D. 测量仪器的运输过程'
+      ],
+      answer: ['A'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 307,
+      question: 'SI导出单位"牛顿"用基本单位表示为（）。',
+      options: [
+        'A. kg·m/s²',
+        'B. g·cm/s²',
+        'C. kg·m/s',
+        'D. m/s²'
+      ],
+      answer: ['A'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 308,
+      question: '计量器具的灵敏度是指（）。',
+      options: [
+        'A. 计量器具输出变化除以相应的输入变化',
+        'B. 计量器具的测量范围',
+        'C. 计量器具的准确度',
+        'D. 计量器具的分辨力'
+      ],
+      answer: ['A'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 309,
+      question: '计量技术机构应建立与其活动范围相适应的（）。',
+      options: [
+        'A. 仅管理制度',
+        'B. 质量管理体系',
+        'C. 仅人员名单',
+        'D. 仅设备清单'
+      ],
+      answer: ['B'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 310,
+      question: '计量标准测量不确定度的A类评定是指（）。',
+      options: [
+        'A. 用对观测列的统计分析进行评定',
+        'B. 用非统计分析进行评定',
+        'C. 用经验估计',
+        'D. 用查阅资料的方法'
+      ],
+      answer: ['A'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 311,
+      question: '在检定或校准工作中，环境条件应满足（）的要求。',
+      options: [
+        'A. 检定规程或校准规范',
+        'B. 任何条件',
+        'C. 仅温度条件',
+        'D. 仅湿度条件'
+      ],
+      answer: ['A'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 312,
+      question: '计量标准器及配套设备应有有效的（）。',
+      options: [
+        'A. 检定或校准证书',
+        'B. 购买发票',
+        'C. 使用说明书',
+        'D. 产品合格证'
+      ],
+      answer: ['A'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 313,
+      question: '计量器具的量程是指（）。',
+      options: [
+        'A. 测量范围的上限值',
+        'B. 测量范围上限值与下限值之差',
+        'C. 测量范围的下限值',
+        'D. 最大测量值'
+      ],
+      answer: ['B'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 314,
+      question: '检定周期是指（）。',
+      options: [
+        'A. 计量器具相邻两次检定之间的时间间隔',
+        'B. 计量器具的使用寿命',
+        'C. 计量标准考核周期',
+        'D. 校准的时间间隔'
+      ],
+      answer: ['A'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 315,
+      question: '计量基准器具的使用必须具备（）。',
+      options: [
+        'A. 正常使用所需的客观条件，包括环境条件、人员、规章制度等',
+        'B. 仅需电源',
+        'C. 仅需操作人员',
+        'D. 仅需场地'
+      ],
+      answer: ['A'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 316,
+      question: '下列属于SI导出单位的是（）。',
+      options: [
+        'A. 米',
+        'B. 千克',
+        'C. 秒',
+        'D. 牛顿'
+      ],
+      answer: ['D'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 317,
+      question: '测量重复性是指在相同条件下，对同一被测量连续多次测量所得结果之间的（）。',
+      options: [
+        'A. 一致性',
+        'B. 差异性',
+        'C. 准确性',
+        'D. 误差大小'
+      ],
+      answer: ['A'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 318,
+      question: '测量仪器在规定的条件下，保持其计量特性恒定不变的能力称为（）。',
+      options: [
+        'A. 稳定性',
+        'B. 重复性',
+        'C. 准确性',
+        'D. 灵敏性'
+      ],
+      answer: ['A'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 319,
+      question: '计量标准的重复性是指在相同测量条件下，重复测量同一被测量，计量标准提供（）的能力。',
+      options: [
+        'A. 不同示值',
+        'B. 相近示值',
+        'C. 任意示值',
+        'D. 最大示值'
+      ],
+      answer: ['B'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 320,
+      question: 'SI基本单位中，热力学温度的单位是（）。',
+      options: [
+        'A. 摄氏度',
+        'B. 华氏度',
+        'C. 开尔文',
+        'D. 兰氏度'
+      ],
+      answer: ['C'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 321,
+      question: '国家计量基准由（）批准。',
+      options: [
+        'A. 省级计量行政部门',
+        'B. 国务院计量行政部门',
+        'C. 任何政府部门',
+        'D. 行业协会'
+      ],
+      answer: ['B'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 322,
+      question: '计量检定机构对外开展检定工作，必须经（）考核合格并取得授权。',
+      options: [
+        'A. 任何计量技术机构',
+        'B. 政府计量行政部门',
+        'C. 企业',
+        'D. 行业协会'
+      ],
+      answer: ['B'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 323,
+      question: '对计量标准进行重复性试验，通常重复测量次数n应不小于（）。',
+      options: [
+        'A. 3次',
+        'B. 5次',
+        'C. 10次',
+        'D. 20次'
+      ],
+      answer: ['C'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 324,
+      question: '下列哪个不是测量误差的来源（）。',
+      options: [
+        'A. 仪器误差',
+        'B. 人员误差',
+        'C. 环境误差',
+        'D. 理论真值'
+      ],
+      answer: ['D'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 325,
+      question: '测量不确定度的B类评定是指（）。',
+      options: [
+        'A. 用对观测列的统计分析进行评定',
+        'B. 用不同于对观测列统计分析的方法进行评定',
+        'C. 仅凭经验估计',
+        'D. 不需要任何信息'
+      ],
+      answer: ['B'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 326,
+      question: '计量标准文件集中，（）是计量标准正常运行的主要技术依据。',
+      options: [
+        'A. 检定规程或校准规范',
+        'B. 使用说明书',
+        'C. 产品标准',
+        'D. 操作手册'
+      ],
+      answer: ['A'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 327,
+      question: '原始记录的书写应使用（）。',
+      options: [
+        'A. 铅笔',
+        'B. 钢笔或签字笔',
+        'C. 任何笔',
+        'D. 圆珠笔'
+      ],
+      answer: ['B'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 328,
+      question: '计量器具的偏移是指（）。',
+      options: [
+        'A. 计量器具示值的系统误差',
+        'B. 计量器具的随机误差',
+        'C. 计量器具的测量范围',
+        'D. 计量器具的分辨力'
+      ],
+      answer: ['A'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 329,
+      question: '进行计量检定或校准时，所使用的标准器的测量不确定度应不超过被检器具最大允许误差绝对值的（）。',
+      options: [
+        'A. 二分之一',
+        'B. 三分之一',
+        'C. 四分之一',
+        'D. 五分之一'
+      ],
+      answer: ['B'],
+      used: false,
+      type: 'single'
+    },
+    {
+      id: 330,
+      question: 'SI基本单位中，时间的单位是（）。',
+      options: [
+        'A. 分',
+        'B. 小时',
+        'C. 秒',
+        'D. 天'
+      ],
+      answer: ['C'],
+      used: false,
+      type: 'single'
+    }
+  ]
 
 };
 

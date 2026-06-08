@@ -4,6 +4,44 @@ import { getRandomQuestion } from './questionEngine.js';
 import { updateScore } from './scoreEngine.js';
 import { renderScoreboard } from './utils.js';
 
+// ===== 登录验证 =====
+(function initLogin() {
+  const overlay = document.getElementById('login-overlay');
+  const usernameInput = document.getElementById('login-username');
+  const passwordInput = document.getElementById('login-password');
+  const loginBtn = document.getElementById('login-btn');
+  const loginError = document.getElementById('login-error');
+
+  // 已登录则跳过
+  if (sessionStorage.getItem('loggedIn') === 'true') {
+    overlay.classList.add('hidden');
+    return;
+  }
+
+  // 显示登录界面
+  overlay.classList.remove('hidden');
+
+  // 回车键登录
+  passwordInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') loginBtn.click();
+  });
+
+  loginBtn.addEventListener('click', () => {
+    const username = usernameInput.value.trim();
+    const password = passwordInput.value.trim();
+
+    if (username === 'manbo' && password === '12312345') {
+      sessionStorage.setItem('loggedIn', 'true');
+      overlay.classList.add('hidden');
+      loginError.textContent = '';
+    } else {
+      loginError.textContent = '用户名或密码错误，请重新输入';
+      passwordInput.value = '';
+      passwordInput.focus();
+    }
+  });
+})();
+
 const questionText = document.getElementById('question-text');
 const optionsContainer = document.getElementById('options-container');
 const resultArea = document.getElementById('result-area');
@@ -339,7 +377,10 @@ nextBtn.onclick = () => {
 
   if (gameState.mode === 'answer') {
     const team = gameState.teams[gameState.currentAnswerTeam - 1];
-    if (team.answerCount >= gameState.maxAnswerQuestions) {
+    const teamPool = gameState.teamQuestionSets[gameState.currentAnswerTeam];
+    const remaining = teamPool ? teamPool.filter(q => !q.used).length : 0;
+    // 答满题目数 或 题目池已空 → 切换到下一队
+    if (team.answerCount >= gameState.maxAnswerQuestions || remaining === 0) {
       if (gameState.currentAnswerTeam < gameState.teams.length) {
         gameState.currentAnswerTeam++;
         startContainer.style.display = 'flex';
