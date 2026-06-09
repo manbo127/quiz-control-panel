@@ -61,6 +61,8 @@ const endAnswerBtn = document.getElementById('end-answer-btn');
 const correctBtn = document.getElementById('correct-btn');
 const wrongBtn = document.getElementById('wrong-btn');
 const bonusMatchInfo = document.getElementById('bonus-match-info');
+const bonusTeamA = document.getElementById('bonus-team-a');
+const bonusTeamB = document.getElementById('bonus-team-b');
 
 let hasSubmitted = false;
 let currentRiskTeam = 1;
@@ -478,21 +480,10 @@ function nextBonusPair() {
 
   questionContainer.style.display = 'none';
 
-  bonusMatchInfo.style.display = 'block';
+  bonusMatchInfo.style.display = 'flex';
 
-  if (
-    currentBonusPair[0].name === '报警器检测室'
-  ) {
-    bonusMatchInfo.innerHTML =
-      `${currentBonusPair[0].name}\n${currentBonusPair[1].name}&nbsp;&nbsp;`;
-  } else if (currentBonusPair[1].name === '报警器检测室') {
-    bonusMatchInfo.innerHTML =
-      `${currentBonusPair[0].name}&nbsp;&nbsp;\n${currentBonusPair[1].name}`;
-  }
-  else {
-    bonusMatchInfo.innerHTML =
-      `${currentBonusPair[0].name}&nbsp;&nbsp;\n${currentBonusPair[1].name}&nbsp;&nbsp;`;
-  }
+  bonusTeamA.innerText = currentBonusPair[0].name;
+  bonusTeamB.innerText = currentBonusPair[1].name;
 }
 
 function renderBonusQuestion() {
