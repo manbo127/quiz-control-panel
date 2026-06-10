@@ -49,6 +49,7 @@ const teamInfo = document.getElementById('team-info');
 const teamSelector = document.getElementById('team-selector');
 const riskSelector = document.getElementById('risk-selector');
 const timerElement = document.getElementById('timer');
+const remainingCount = document.getElementById('remaining-count');
 
 const startContainer = document.getElementById('start-container');
 const questionContainer = document.getElementById('question-container');
@@ -172,6 +173,17 @@ function updateCurrentTeamInfo() {
   }
 }
 
+// ===== 更新抢答题剩余题数 =====
+function updateRemainingCount() {
+  if (gameState.mode === 'buzzer') {
+    const remaining = gameState.buzzerQuestions.filter(q => !q.used).length;
+    remainingCount.innerText = `剩余题目：${remaining} / ${gameState.buzzerQuestions.length}`;
+    remainingCount.style.display = '';
+  } else {
+    remainingCount.style.display = 'none';
+  }
+}
+
 // ===== 渲染抢答队伍 =====
 function renderTeamSelector() {
   teamSelector.innerHTML = '';
@@ -272,6 +284,7 @@ function renderQuestion() {
   wrongBtn.style.display = 'none';
 
   if (gameState.mode === 'answer') startTimer(30);
+  updateRemainingCount();
 }
 
 // ===== 提交答案（普通题+加赛题统一） =====
@@ -609,6 +622,7 @@ window.startQuestion = () => {
   correctBtn.style.display = 'none';
   wrongBtn.style.display = 'none';
   timerElement.innerText = '';
+  updateRemainingCount();
 };
 fullscreenBtn.onclick = () => {
 
