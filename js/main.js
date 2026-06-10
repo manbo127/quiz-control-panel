@@ -106,10 +106,12 @@ function startTimer(seconds) {
         gameState.teams[gameState.currentAnswerTeam - 1].answerCount++;
       } else if (gameState.mode === 'buzzer') {
         if (gameState.selectedTeam) {
-          resultArea.innerText = '超时！抢答失败，另一队获胜';
-          const winner = gameState.teams.find(t => t.id !== gameState.selectedTeam);
-          updateScore(winner.id, 10);
+          const team = gameState.teams.find(t => t.id === gameState.selectedTeam);
+          resultArea.innerText = `超时！${team.name} 抢答超时 -10分`;
+          updateScore(gameState.selectedTeam, -10);
           renderScoreboard();
+        } else {
+          resultArea.innerText = '超时！无人抢答';
         }
       } else if (gameState.mode === 'risk') {
         resultArea.innerText = `超时！ -${currentRiskPoints}分`;
