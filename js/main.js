@@ -435,6 +435,8 @@ nextBtn.onclick = () => {
 startBtn.onclick = () => {
   startContainer.style.display = 'none';
   questionContainer.style.display = 'block';
+  bonusMatchInfo.style.display = 'none';
+  timerElement.style.display = 'block';
 
   if (gameState.mode === 'risk') {
     currentRiskTeam = 1;
@@ -450,7 +452,6 @@ startBtn.onclick = () => {
   }
 
   if (gameState.mode === 'bonus') {
-    bonusMatchInfo.style.display = 'none';
     renderBonusQuestion();
     return;
   }
@@ -585,6 +586,8 @@ window.startQuestion = () => {
   teamInfo.innerText = '';
   teamSelector.innerHTML = '';
   riskSelector.innerHTML = '';
+  bonusMatchInfo.style.display = 'none';
+  timerElement.style.display = 'block';
   gameState.currentQuestion = null;
   gameState.selectedAnswers = [];
   gameState.selectedTeam = null;

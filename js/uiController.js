@@ -17,6 +17,12 @@ export function switchMode(mode){
     questionPage.classList.add('active');
   }
 
+  // 清理加赛题相关UI，防止污染其他模式
+  const bonusMatchInfo = document.getElementById('bonus-match-info');
+  if (bonusMatchInfo) bonusMatchInfo.style.display = 'none';
+  const timerEl = document.getElementById('timer');
+  if (timerEl) timerEl.style.display = 'block';
+
   const title = document.getElementById('mode-title');
 
   if(mode === 'answer'){
