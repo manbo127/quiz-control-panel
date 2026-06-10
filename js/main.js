@@ -78,13 +78,23 @@ let currentBonusPair = [];
 function startTimer(seconds) {
   clearInterval(timer);
   timeLeft = seconds;
+  timerElement.classList.remove('warning');
   timerElement.innerText = `剩余时间：${timeLeft} 秒`;
 
   timer = setInterval(() => {
     timeLeft--;
     timerElement.innerText = `剩余时间：${timeLeft} 秒`;
+
+    // 最后5秒视觉警告
+    if (timeLeft <= 5 && timeLeft > 0) {
+      timerElement.classList.add('warning');
+    } else {
+      timerElement.classList.remove('warning');
+    }
+
     if (timeLeft <= 0) {
       clearInterval(timer);
+      timerElement.classList.remove('warning');
       timerElement.innerText = '时间到！';
       if (hasSubmitted) return;
       hasSubmitted = true;
@@ -138,6 +148,7 @@ function startTimer(seconds) {
 // ===== 停止倒计时 =====
 function stopTimer() {
   clearInterval(timer);
+  timerElement.classList.remove('warning');
   timerElement.innerText = '';
 }
 
@@ -496,8 +507,8 @@ function nextBonusPair() {
 
   bonusMatchInfo.style.display = 'flex';
 
-  bonusTeamA.innerText = currentBonusPair[0].name;
-  bonusTeamB.innerText = currentBonusPair[1].name;
+  if (bonusTeamA) bonusTeamA.innerText = currentBonusPair[0].name;
+  if (bonusTeamB) bonusTeamB.innerText = currentBonusPair[1].name;
 }
 
 function renderBonusQuestion() {
