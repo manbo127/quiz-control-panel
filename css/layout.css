@@ -94,6 +94,8 @@ body {
   font-size: 22px;
   color: #1e293b;
   flex-shrink: 0;
+  display: inline;
+  vertical-align: middle;
 }
 
 /* ===== 题卡动画 ===== */

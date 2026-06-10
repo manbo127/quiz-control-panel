@@ -155,7 +155,7 @@ function updateCurrentTeamInfo() {
     }
   } else if (gameState.mode === 'risk') {
     const team = gameState.teams[currentRiskTeam - 1];
-    teamInfo.innerText = `当前风险题队伍：${team.name}`;
+    teamInfo.innerText = `⚡ 风险题 · ${team.name}`;
   } else if (gameState.mode === 'bonus') {
     teamInfo.innerText = `加赛题：${currentBonusPair[0].name} vs ${currentBonusPair[1].name}`;
   }
@@ -184,10 +184,17 @@ function renderTeamSelector() {
 function renderRiskSelector() {
   riskSelector.innerHTML = '';
   if (gameState.mode !== 'risk') return;
-  [20, 30, 40].forEach(score => {
+
+  const scoreConfigs = [
+    { score: 20, cssClass: 'risk-score-20', label: '低风险' },
+    { score: 30, cssClass: 'risk-score-30', label: '中风险' },
+    { score: 40, cssClass: 'risk-score-40', label: '高风险' },
+  ];
+
+  scoreConfigs.forEach(({ score, cssClass, label }) => {
     const btn = document.createElement('button');
-    btn.className = 'team-button';
-    btn.innerText = `${score}分`;
+    btn.className = `risk-score-btn ${cssClass}`;
+    btn.innerHTML = `<span class="score-value">${score}</span><span class="score-label">分 · ${label}</span>`;
     btn.onclick = () => {
       currentRiskPoints = score;
       gameState.selectedRisk = score;
@@ -202,6 +209,12 @@ function renderRiskSelector() {
       correctBtn.style.display = 'none';
       wrongBtn.style.display = 'none';
       startTimer(60);
+      // 只保留选中的分值档位，隐藏其余
+      document.querySelectorAll('.risk-score-btn').forEach(b => {
+        b.style.display = 'none';
+      });
+      btn.style.display = '';
+      btn.classList.add('selected');
     };
     riskSelector.appendChild(btn);
   });
@@ -368,7 +381,7 @@ nextBtn.onclick = () => {
     timerElement.innerText = '';
     if (currentRiskTeam > gameState.teams.length) { alert('风险题阶段结束！'); switchMode('home'); startContainer.style.display = 'block'; questionContainer.style.display = 'none'; return; }
     updateCurrentTeamInfo();
-    questionText.innerText = '请选择分值';
+    questionText.innerText = '🎯 请选择风险题分值';
     renderRiskSelector();
     submitBtn.style.display = 'none';
     endAnswerBtn.style.display = 'none';
@@ -426,7 +439,7 @@ startBtn.onclick = () => {
   if (gameState.mode === 'risk') {
     currentRiskTeam = 1;
     updateCurrentTeamInfo();
-    questionText.innerText = '请选择分值';
+    questionText.innerText = '🎯 请选择风险题分值';
     renderRiskSelector();
     timerElement.innerText = '';
     submitBtn.style.display = 'none';
